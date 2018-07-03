@@ -17,7 +17,7 @@ module CPU(reset, clk);
 	InstructionMemory instruction_memory1(.Address(PC), .Instruction(Instruction));
 	
 	wire [1:0] RegDst;
-	wire [1:0] PCSrc;
+	wire [2:0] PCSrc;
 	wire Branch;
 	wire MemRead;
 	wire [1:0] MemtoReg;
@@ -37,7 +37,7 @@ module CPU(reset, clk);
 	
 	wire [31:0] Databus1, Databus2, Databus3;
 	wire [4:0] Write_register;
-	assign Write_register = (RegDst == 2'b00)? Instruction[20:16]: (RegDst == 2'b01)? Instruction[15:11]: 5'b11111;
+	assign Write_register = (RegDst == 2'b00)? Instruction[15:11]: (RegDst == 2'b01)? Instruction[20:16]: (RegDst == 2'b10)? 5'd31: 5'd26;	
 	RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(RegWrite), 
 		.Read_register1(Instruction[25:21]), .Read_register2(Instruction[20:16]), .Write_register(Write_register),
 		.Write_data(Databus3), .Read_data1(Databus1), .Read_data2(Databus2));
@@ -68,9 +68,10 @@ module CPU(reset, clk);
 	assign Jump_target = {PC_plus_4[31:28], Instruction[25:0], 2'b00};
 	
 	wire [31:0] Branch_target;
-	assign Branch_target = (Branch & Zero)? PC_plus_4 + {LU_out[29:0], 2'b00}: PC_plus_4;
-	
-	assign PC_next = (PCSrc == 2'b00)? Branch_target: (PCSrc == 2'b01)? Jump_target: Databus1;
+	assign Branch_target = (ALU_out[0])? PC_plus_4 + {LU_out[29:0], 2'b00}: PC_plus_4;
+	parameter ILLOP = 32'h80000004;
+	parameter XADR = 32'h80000008;
+	assign PC_next = (PCSrc == 3'b000)? PC_plus_4: (PCSrc == 3'b001): Branch_target: (PCSrc == 3'b010)? Jump_target: (PCSrc == 3'b011)? Databus1: (PCSrc == 3'b100)? ILLOP: XADR;
 
 endmodule
 	
