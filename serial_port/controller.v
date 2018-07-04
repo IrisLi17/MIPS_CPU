@@ -1,3 +1,4 @@
+/*
 module controller(rx_data,rx_status,tx_status,sys_clk,tx_data,tx_enable,reset);
 input [7:0] rx_data;
 input rx_status;
@@ -30,3 +31,5 @@ always @(posedge sys_clk or posedge reset) begin
   end
 end
 endmodule
+*/
+//这个文件基本上没什么用了。。。

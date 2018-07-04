@@ -45,11 +45,11 @@ always @(posedge clk or posedge reset) begin
       if(tx_enable == 1'b1 && remain == 1'b1) begin
       //if(cur_enable == 1'b1 && last_enable == 1'b0) begin
         status<=2'b01;
-        out_status<=1'b0;//unavailable
+        out_status<=1'b1;//unavailable
         tx_buffer<=tx_data;
       end 
       else begin
-        out_status<=1'b1;//free
+        out_status<=1'b0;//free
       end 
     end
     else if(status == 2'b01) begin
@@ -74,14 +74,14 @@ always @(posedge clk or posedge reset) begin
       if(baud_count == 7'd15) begin
         if(remain == 1'b0) begin
           status<=2'b00;
-          out_status<=1'b1;
+          out_status<=1'b0;
           //lock<=1'b0;
           tx_buffer<=7'b1111111;
           baud_count<=7'd0;
         end
         else begin
           status<=2'b01;
-          out_status<=1'b0;
+          out_status<=1'b1;
           tx_buffer<=tx_data;
           baud_count<=7'd0;
         end
