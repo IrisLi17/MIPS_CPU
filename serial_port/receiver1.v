@@ -18,7 +18,7 @@ assign rx_data = temp_data;
 initial begin
   status<=2'b00;
   baud_count<=7'd0;
-  out_status<=1'b1;
+  out_status<=1'b0;
   temp_data<=7'b1111111;
   data<=7'b1111111;
 end
@@ -26,7 +26,7 @@ always @(posedge clk or posedge reset) begin
   if(reset == 1'b1) begin
     status<=2'b00;
     baud_count<=7'd0;
-    out_status<=1'b1;
+    out_status<=1'b0;
     temp_data<=7'b1111111;
     data<=7'b1111111;
   end
@@ -36,7 +36,7 @@ always @(posedge clk or posedge reset) begin
     if(status == 2'b00) begin
       if(curdata == 1'b0 && lastdata == 1'b1) begin
         status<=2'b01;
-        out_status<=1'b1;
+        out_status<=1'b0;
       end
     end
     else if(status == 2'b01) begin
@@ -68,7 +68,7 @@ always @(posedge clk or posedge reset) begin
         baud_count<=7'd0;
         status<=2'b00;
         //temp_data<=data;
-        out_status<=1'b0;
+        out_status<=1'b1;
       end
       else begin
         baud_count<=baud_count+7'd1;
