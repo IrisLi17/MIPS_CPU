@@ -335,9 +335,13 @@ def translateFile (assembleFile, outName):
         else:
             binCodes.append(assem2code(item[1]))
     #output
+    # with open(outName,'w') as fout:
+    #     for item in binCodes:
+    #         fout.write(item + '\n')
+    # fout.close()
     with open(outName,'w') as fout:
-        for item in binCodes:
-            fout.write(item + '\n')
+        for index in range(len(binCodes)):
+            fout.write("ROMDATA["+str(index)+"] <= 32\'b"+str(binCodes[index])+";\n")
     fout.close()
 
-translateFile("InterruptionCode.asm","output.txt")
+translateFile("InterruptionCode.asm","rom_instructions.v")
