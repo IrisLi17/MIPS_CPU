@@ -37,8 +37,12 @@ def reg2code(register):
     return '{:05b}'.format(digit)
 
 
-def immExt(interger, bitNumber = 16):
+def immExt(stringInt, bitNumber = 16):
     """整数转16位二进制，正数用原码，负数用补码"""
+    if len(stringInt)>2 and stringInt[0:2] == '0x':
+        interger = int(stringInt,base=16)
+    else:
+        interger = int(stringInt)
     if  interger >= 0:
         return ('{:0' + str(bitNumber) + 'b}').format(interger)
     else:
@@ -62,14 +66,14 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "001000"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "addiu":
         assert len(fields) == 4
         opcode = "001001"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "addu":
         assert len(fields) == 4
@@ -94,49 +98,49 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "001100"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "beq":
         assert len(fields) == 4
         opcode = "000100"
         rs = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        offset = immExt(tagDict[fields[3]] - curIndex)
+        offset = immExt(str(tagDict[fields[3]] - curIndex))
         return opcode + rs + rt + offset
     if instruc == "bgtz":
         assert len(fields) == 3
         opcode = "000111"
         rs = reg2code(fields[1][1:])
-        offset = immExt(tagDict[fields[2]] - curIndex)
+        offset = immExt(str(tagDict[fields[2]] - curIndex))
         return opcode + rs + "00000" + offset
     if instruc == "blez":
         assert len(fields) == 3
         opcode = "000110"
         rs = reg2code(fields[1][1:])
-        offset = immExt(tagDict[fields[2]] - curIndex)
+        offset = immExt(str(tagDict[fields[2]] - curIndex))
         return opcode + rs + "00000" + offset
     if instruc == "bltz":
         assert len(fields) == 3
         opcode = "000001"
         rs = reg2code(fields[1][1:])
-        offset = immExt(tagDict[fields[2]] - curIndex)
+        offset = immExt(str(tagDict[fields[2]] - curIndex))
         return opcode + rs + "00000" + offset
     if instruc == "bne":
         assert len(fields) == 4
         opcode = "000101"
         rs = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        offset = immExt(tagDict[fields[3]] - curIndex)
+        offset = immExt(str(tagDict[fields[3]] - curIndex))
         return opcode + rs + rt + offset
     if instruc == "j":
         assert len(fields) == 2
         opcode = "000010"
-        target = immExt(tagDict[fields[1]], 26)
+        target = immExt(str(tagDict[fields[1]]), 26)
         return opcode + target
     if instruc == "jal":
         assert len(fields) == 2
         opcode = "000011"
-        target = immExt(tagDict[fields[1]], 26)
+        target = immExt(str(tagDict[fields[1]]), 26)
         return opcode + target
     if instruc == "jalr":
         # jalr rs
@@ -162,7 +166,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         assert len(fields) == 3
         opcode = "001111"
         rt = reg2code(fields[1][1:])
-        imm = immExt(int(fields[2]))
+        imm = immExt(fields[2])
         return opcode + "00000" + rt + imm
     if instruc == "lw":
         assert len(fields) == 3
@@ -172,7 +176,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         offsetstr = re.findall(pattern2,fields[2])[0]
         rt = reg2code(fields[1][1:])
         base = reg2code(basestr[1:])
-        offset = immExt(int(offsetstr))
+        offset = immExt(offsetstr)
         opcode = "100011"
         return opcode + base + rt + offset
     if instruc == "nop":
@@ -200,14 +204,14 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "001101"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "sll":
         assert len(fields) == 4
         opcode = "000000"
         rd = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        shamt = immExt(int(fields[3]), 5)
+        shamt = immExt(fields[3], 5)
         return opcode + "00000" + rt + rd + shamt + "000000"
     if instruc == "slt":
         assert len(fields) == 4
@@ -222,21 +226,21 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "001010"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "sltiu":
         assert len(fields) == 4
         opcode = "001011"
         rt = reg2code(fields[1][1:])
         rs = reg2code(fields[2][1:])
-        imm = immExt(int(fields[3]))
+        imm = immExt(fields[3])
         return opcode + rs + rt + imm
     if instruc == "sra":
         assert len(fields) == 4
         opcode = "000000"
         rd = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        shamt = immExt(int(fields[3]),5)
+        shamt = immExt(fields[3],5)
         funct = "000011"
         return opcode + "00000" + rt + rd + shamt + funct
     if instruc == "srl":
@@ -244,7 +248,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "000000"
         rd = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        shamt = immExt(int(fields[3]), 5)
+        shamt = immExt(fields[3], 5)
         return opcode + "00000" + rt + rd + shamt + "000010"
     if instruc == "sub":
         assert len(fields) == 4
@@ -272,7 +276,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         offsetstr = re.findall(pattern2, fields[2])[0]
         rt = reg2code(fields[1][1:])
         base = reg2code(basestr[1:])
-        offset = immExt(int(offsetstr))
+        offset = immExt(offsetstr)
         opcode = "101011"
         return opcode + base + rt + offset
     if instruc == "xor":
@@ -289,7 +293,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         return "000000" + "00000" + "00000" + "00000" + "00000" + "000000"
 
 def translateFile (assembleFile, outName):
-    with open(assembleFile) as f:
+    with open(assembleFile,encoding='utf8') as f:
         lines = f.readlines()
         codes = []   # 结构为[[tag,fields],[tag,fields],...]
         binCodes = []
@@ -336,4 +340,4 @@ def translateFile (assembleFile, outName):
             fout.write(item + '\n')
     fout.close()
 
-translateFile("input.txt","output.txt")
+translateFile("InterruptionCode.asm","output.txt")
