@@ -15,8 +15,8 @@ output reg [1:0] MemToReg,
 output reg EXTOp,
 output reg LUOp
 );
-	wire OpCode;
-  wire Funct;
+	wire [5:0]OpCode;
+  wire [5:0]Funct;
   assign OpCode = Instruct[31:26];
   assign Funct = Instruct[5:0];
 
