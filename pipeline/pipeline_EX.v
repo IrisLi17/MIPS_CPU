@@ -1,5 +1,5 @@
-module pipeline_EX(clk,reset,ForwardA,ForwardB,EX_ALUFun,Sign,EX_ALUOut,MEMWBdata,EXMEMdata,EX_BusB,EX_BusA);
-input clk,reset,Sign;
+module pipeline_EX(ForwardA,ForwardB,EX_ALUFun,Sign,EX_ALUOut,MEMWBdata,EXMEMdata,EX_BusB,EX_BusA);
+input Sign;
 input [1:0]ForwardA,ForwardB;
 input [31:0]EX_BusA,EX_BusB,MEMWBdata,EXMEMdata;
 input [5:0]EX_ALUFun;

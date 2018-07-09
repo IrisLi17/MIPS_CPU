@@ -19,6 +19,10 @@ if(reset) begin
 WB_inA=32'b0;
 WB_inB=32'b0;
 WB_RegWr=0;
+WB_RegDst=0;
+WB_MemtoReg=0;
+WB_WrReg=0;
+WB_PC=0;
 end
 else begin
 WB_inA=Mem_outA;
