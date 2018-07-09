@@ -37,7 +37,7 @@ assign compare=(choose==3'b001) ? Z:
                (choose==3'b110) ? (N|Z):
                (choose==3'b101) ? N:
                (choose==3'b111) ? ~(N|Z):32'b0;
-endmodule;
+endmodule
 //Logic
 module Logic(A,B,choice,logic);
 input [31:0]A,B;
