@@ -1,6 +1,6 @@
 loop:
-sgt     $t0, $s0, $zero
-sgt     $t1, $s1, $zero
+slt     $t0, $zero, $s0
+slt     $t1, $zero, $s1 
 and     $t2, $t0, $t1 # forwarding
 bne		$t2, $zero, target # forwarding
 add		$s2, $s0, $zero # 无关指令，防止阻塞
