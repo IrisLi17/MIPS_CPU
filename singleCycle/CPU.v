@@ -22,7 +22,7 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 	
 	wire [31:0] Instruction;
 	wire [31:0] InstructionMemIn;
-	assign InstructionMemIn = {1'b0, PC[30:0]};
+	assign InstructionMemIn = {1'b0, PC[30:0]}; 
 	InstructionMemory instruction_memory1(.Address(InstructionMemIn), .Instruction(Instruction));
 	
 	wire [1:0] RegDst;
@@ -82,7 +82,7 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 	assign Databus3 = (MemtoReg == 2'b00)? Z : (MemtoReg == 2'b01)? Read_data: PC_plus_4;
 	
 	wire [31:0] Jump_target;
-	assign Jump_target = {PC_plus_4[31:28], Instruction[25:0], 2'b00};
+	assign Jump_target = {1'b0,PC_plus_4[30:28], Instruction[25:0], 2'b00};
 	
 	wire [31:0] Branch_target;
 	assign Branch_target = (Z[0])? PC_plus_4 + {LU_out[29:0], 2'b00}: PC_plus_4;
