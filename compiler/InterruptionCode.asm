@@ -1,8 +1,13 @@
 #interruption processing code
 #假设待显示的两个8bit数放在寄存器$s0和$s1中
 
-#首先检查串口是否有数据接收
 lui     $t0, 0x4000
+lw      $t1, 8($t0)
+addi    $t2, $zero, 0xFFF9
+and     $t1, $t1, $t2
+sw      $t1, 8($t0)
+
+#首先检查串口是否有数据接收
 lw      $t1, 32($t0) #forwarding
 sll     $zero, $zero, 0 #空指令
 andi    $t2, $t1, 0x0008 #forwarding
@@ -56,4 +61,9 @@ lw      $t5, 0($t4) #forwarding
 sll     $zero, $zero, 0 #这条指令是nop
 add     $t6, $t5, $t3 #forwarding
 sw      $t6, 20($t0) #forwarding
+
+lw      $t1, 8($t0)
+ori     $t1, $t1, 0x0002
+sw      $t1, 8($t0)
+
 jr		$k0					
