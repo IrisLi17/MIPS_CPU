@@ -12,11 +12,10 @@ always @(posedge sys_clk) begin
   case (counter)
     3'b111: begin
       counter<=3'd0;
-      clk<=1;
+      clk<=~clk;
     end
     default: begin
       counter <= counter + 3'd1;
-      clk <= 0;
     end
   endcase
 end
