@@ -29,8 +29,8 @@ assign rdata = rd?((addr == 32'h40000018)?{24'b0,uart_txd}:
                     (addr == 32'h40000020)?{27'b0,uart_con}:32'b0)):32'b0;
 
 
-always @(negedge reset or posedge cpu_clk) begin
-  if (~reset) begin
+always @(posedge reset or posedge cpu_clk) begin
+  if (reset) begin
     uart_con <= 5'b00011;
   end
   else 

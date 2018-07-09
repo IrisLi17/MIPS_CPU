@@ -29,9 +29,7 @@ assign irqout = TCON[2];
 // receiver1 myReceiver(.uart_rx(uart_rx),.clk(gen_clk),.reset(reset),.rx_data(uart_rxd),.rx_status(uart_con[3]));
 // sender mySender(.tx_data(uart_txd),.clk(gen_clk),.reset(reset),.uart_tx(uart_tx),.tx_status(uart_con[4]),.tx_enable(uart_con[2]));
 // assign uart_con[2] = uart_con[4];
-initial begin
-  TCON[2] = 0;
-end
+
 always@(*) begin
 	if(rd) begin
 		case(addr)
@@ -56,11 +54,13 @@ always@(*) begin
 		rdata <= 32'b0;
 end
 
-always@(negedge reset or posedge clk) begin
-	if(~reset) begin
+always@(posedge reset or posedge clk) begin
+	if(reset) begin
 		TH <= 32'b0;
 		TL <= 32'b0;
-		TCON <= 3'b0;	
+		TCON <= 3'b0;
+		digi <= 12'b0;
+		led <= 12'b0;
 		// uart_con <= 5'b00011;
 	end
 	else begin
