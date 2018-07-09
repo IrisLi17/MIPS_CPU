@@ -1,3 +1,12 @@
+lui     $t5, 0x4000
+sw      $zero, 8($t5)
+sw      $zero, 0($t5)
+lui     $t6, 0xFFFF
+addi    $t6, $t6, 0xFFFF
+sw      $t6, 4($t5)
+addi    $t4, $zero, 0x0003
+sw      $t4, 8($t5)
+
 loop:
 slt     $t0, $zero, $s0
 slt     $t1, $zero, $s1 
@@ -12,7 +21,7 @@ add     $s3, $s1, $zero
 compare:
 slt     $t3, $s2, $s3 # forwarding
 beq     $t3, $zero, s2greater # forwarding
-lui     $t5, 0x4000 # 无关指令，防止阻塞
+sll     $zero, $zero, 0 # stall
 add     $t4, $s2, $zero # if $s3 is greater, swap
 add     $s2, $s3, $zero
 add     $s3, $t4, $zero # forwarding
