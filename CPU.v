@@ -1,10 +1,13 @@
-module CPU(reset, clk, led, switch, digi, uart_rx, uart_tx);
-	input reset, clk;
+module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
+	input reset, sys_clk;
 	output [7:0] led;
 	input [7:0] switch;
 	output [11:0] digi;
 	input uart_rx;
 	output uart_tx;
+
+	wire clk;
+	cpu_clk cpu_clk(.sys_clk(sys_clk),.clk(clk));
 	
 	reg [31:0] PC;
 	wire [31:0] PC_next;
@@ -59,18 +62,23 @@ module CPU(reset, clk, led, switch, digi, uart_rx, uart_tx);
 	wire [31:0] A;
 	wire [31:0] B;
 	wire [31:0] Z;
-	wire [5:0]  ALUFun;
 	assign A = ALUSrc1 ? {27'b0, Instruction[10:6]}: Databus1;
 	assign B = ALUSrc2 ? LU_out: Databus2;
-	ALU alu1(.A(A), .B(B), .Z(Z), .Sign(Sign), .ALUFun(ALUFun));
+	ALU alu1(.A(A), .B(B), .S(Z), .Sign(Sign), .ALUFun(ALUFun));
 	
 	wire [31:0] Read_data;
 	wire [31:0] Mem_Read_data;
 	wire [31:0] Per_Read_data;
+	wire [31:0] Uart_Read_data;
 	DataMemory data_memory1(.reset(reset), .clk(clk), .Address(Z), .Write_data(Databus2), .Read_data(Mem_Read_data), .MemRead(MemRd), .MemWrite(MemWr));
 	Peripheral myPeripheral(.reset(reset), .clk(clk), .rd(MemRd), .wr(MemWr), .addr(Z), .wdata(Databus2), 
 	                        .rdata(Per_Read_data), .irqout(IRQ), .led(led), .switch(switch), 
-							.digi(digi), .uart_rx(uart_rx), .uart_tx(uart_tx));
+							.digi(digi));
+	UART myuart(.sys_clk(sys_clk),.cpu_clk(clk),.reset(reset),
+		        .rd(MemRd),.wr(MemWr),.addr(Z),
+				.rdata(Uart_Read_data),.wdata(Databus2),
+				.uart_rx(uart_rx),.uart_tx(uart_tx));
+	assign Read_data = Mem_Read_data | Per_Read_data | Uart_Read_data;
 	assign Databus3 = (MemtoReg == 2'b00)? Z : (MemtoReg == 2'b01)? Read_data: PC_plus_4;
 	
 	wire [31:0] Jump_target;
@@ -80,7 +88,11 @@ module CPU(reset, clk, led, switch, digi, uart_rx, uart_tx);
 	assign Branch_target = (Z[0])? PC_plus_4 + {LU_out[29:0], 2'b00}: PC_plus_4;
 	parameter ILLOP = 32'h80000004;
 	parameter XADR = 32'h80000008;
-	assign PC_next = (PCSrc == 3'b000)? PC_plus_4: (PCSrc == 3'b001): Branch_target: (PCSrc == 3'b010)? Jump_target: (PCSrc == 3'b011)? Databus1: (PCSrc == 3'b100)? ILLOP: XADR;
+	assign PC_next = (PCSrc == 3'b000)? PC_plus_4: 
+	                 ((PCSrc == 3'b001)? Branch_target: 
+					 ((PCSrc == 3'b010)? Jump_target: 
+					 ((PCSrc == 3'b011)? Databus1: 
+					 ((PCSrc == 3'b100)? ILLOP: XADR))));
 
 endmodule
 	
