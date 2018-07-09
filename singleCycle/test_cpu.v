@@ -13,10 +13,11 @@ module test_cpu();
 	
 	initial begin
 		reset <= 1;
+		#10 reset <= 0;
 		clk <= 1;
 		switch <= 8'b10101010;
 		uart_rx <= 0;
-		#5000 reset <= 0;
+		#5000 reset <= 1;
 	end
 	initial fork
 		forever begin
