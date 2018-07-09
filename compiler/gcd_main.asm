@@ -1,8 +1,7 @@
 lui     $t5, 0x4000
 sw      $zero, 8($t5)
 sw      $zero, 0($t5)
-lui     $t6, 0xFFFF
-addi    $t6, $t6, 0xFFFF
+nor     $t6, $zero, $zero
 sw      $t6, 4($t5)
 addi    $t4, $zero, 0x0003
 sw      $t4, 8($t5)
