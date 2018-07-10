@@ -1,4 +1,5 @@
-module EXMEM_reg(clk,reset,EX_ALUout,Mem_in,
+module EXMEM_reg(clk,reset,
+                 EX_ALUout,Mem_in,
                  EX_MemWr,Mem_MemWr,
                  EX_MemRd,Mem_MemRd,
                  EX_BusB,Mem_BusB,
@@ -23,6 +24,13 @@ Mem_MemWr=0;
 Mem_MemRd=0;
 Mem_in=0;
 Mem_BusB=0;
+Mem_MemtoReg=0;
+Mem_WrReg=0;
+Mem_RegWr=0;
+Mem_RegDst=0;
+Mem_PC=0;
+Mem_rt=0;
+Mem_rd=0;
 end
 else begin
 Mem_MemWr=EX_MemWr;
