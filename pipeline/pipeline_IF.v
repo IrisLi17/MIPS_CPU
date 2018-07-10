@@ -4,9 +4,8 @@ input[31:0]ConBA,ID_BusA;
 input[25:0]JT;
 input[2:0]PCSrc;
 output reg[31:0] PC;
-output [31:0]IF_PC;
+output reg[31:0]IF_PC;
 wire[31:0] PC_choose;
-assign IF_PC=PC+4;
 assign PC_choose= stall? PC:
                   (PCSrc==0) ? 	PC+4 : //????
                   (PCSrc==1 & ALUOut0==0) ?  ConBA: //branch??
@@ -17,8 +16,9 @@ assign PC_choose= stall? PC:
 always @(posedge clk or posedge reset)
 begin
 if(reset)
-PC=32'h80000000;
-else
+PC=32'h00000000;
+else 
 PC=PC_choose;
+IF_PC=PC+4;
 end
 endmodule

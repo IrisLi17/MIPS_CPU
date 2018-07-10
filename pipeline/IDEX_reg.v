@@ -10,14 +10,15 @@ module IDEX_reg(clk,reset,stall, //????load??use??
                 ID_WrReg,EX_WrReg,
                 ID_PC,EX_PC,
                 ID_rt,EX_rt,
-                ID_rd,EX_rd);
+                ID_rd,EX_rd,
+                ID_rs,EX_rs);
 input clk,reset,stall,ID_MemWr,ID_MemRd,ID_RegWr;//when stall is enable,place MemWr,MenRd and RegWr on zero
 input [5:0]ID_ALUFun;
 input [1:0]ID_RegDst,ID_MemtoReg;
-input [4:0]ID_WrReg,ID_rt,ID_rd;
+input [4:0]ID_WrReg,ID_rt,ID_rd,ID_rs;
 input [31:0]ID_PC,ID_BusA,ID_BusB;
 output reg[31:0]EX_PC,EX_BusA,EX_BusB;
-output reg[4:0]EX_WrReg,EX_rt,EX_rd;
+output reg[4:0]EX_WrReg,EX_rt,EX_rd,EX_rs;
 output reg[1:0]EX_RegDst,EX_MemtoReg;
 output reg[5:0]EX_ALUFun;
 output reg EX_MemWr,EX_MemRd,EX_RegWr;
@@ -33,6 +34,9 @@ EX_RegDst=0;
 EX_MemtoReg=0;
 EX_WrReg=0;
 EX_PC=0;
+EX_rt=0;
+EX_rd=0;
+EX_rs=0;
 end
 else begin
 EX_ALUFun=ID_ALUFun;
@@ -44,6 +48,7 @@ EX_WrReg=ID_WrReg;
 EX_PC=ID_PC;
 EX_rt=ID_rt;
 EX_rd=ID_rd;
+EX_rs=ID_rs;
 end
 end
 endmodule

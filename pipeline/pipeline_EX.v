@@ -1,9 +1,10 @@
 module pipeline_EX(ForwardA,ForwardB,EX_ALUFun,Sign,EX_ALUOut,MEMWBdata,EXMEMdata,EX_BusB,EX_BusA);
 input Sign;
 input [1:0]ForwardA,ForwardB;
-input [31:0]EX_BusA,EX_BusB,MEMWBdata,EXMEMdata;
+input [31:0]EX_BusA,EX_BusB,MEMWBdata;
+input [31:0]EXMEMdata;
 input [5:0]EX_ALUFun;
-output EX_ALUOut;
+output [31:0]EX_ALUOut;
 wire [31:0]Data1,Data2;
 assign Data1=(ForwardA==2'b0) ? EX_BusA :
              (ForwardA==2'b1) ? MEMWBdata :
