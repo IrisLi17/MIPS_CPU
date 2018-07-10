@@ -18,7 +18,9 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 			PC <= PC_next;
 	
 	wire [31:0] PC_plus_4;
-	assign PC_plus_4 = PC + 32'd4;
+	wire [31:0] PC_plus_4_back;
+	assign PC_plus_4_back = PC + 32'd4;
+	assign PC_plus_4 = {PC[31],PC_plus_4_back[30:0]};
 	
 	wire [31:0] Instruction;
 	wire [31:0] InstructionMemIn;
@@ -79,10 +81,10 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 				.rdata(Uart_Read_data),.wdata(Databus2),
 				.uart_rx(uart_rx),.uart_tx(uart_tx));
 	assign Read_data = Mem_Read_data | Per_Read_data | Uart_Read_data;
-	assign Databus3 = (MemtoReg == 2'b00)? Z : (MemtoReg == 2'b01)? Read_data: PC_plus_4;
+	assign Databus3 = (MemtoReg == 2'b00)? Z : (MemtoReg == 2'b01)? Read_data: {1'b0,PC_plus_4[30:0]}; //需要把PC+4写回寄存器的只有jal指令？
 	
 	wire [31:0] Jump_target;
-	assign Jump_target = {1'b0,PC_plus_4[30:28], Instruction[25:0], 2'b00};
+	assign Jump_target = {PC_plus_4[31:28], Instruction[25:0], 2'b00};
 	
 	wire [31:0] Branch_target;
 	assign Branch_target = (Z[0])? PC_plus_4 + {LU_out[29:0], 2'b00}: PC_plus_4;
