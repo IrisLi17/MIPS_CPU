@@ -30,6 +30,9 @@ always @(posedge clk or posedge reset) begin
     temp_data<=7'b1111111;
     data<=7'b1111111;
   end
+  else if (out_status == 1'b1) begin
+    out_status <= 1'b0; //只希望输出一个串口时钟的高电平，防止上层uart_con[3]总是被置为1
+  end
   else begin
     curdata<=uart_rx;
     lastdata<=curdata;

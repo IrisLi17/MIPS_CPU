@@ -34,7 +34,7 @@ always @(posedge reset or posedge cpu_clk) begin
     uart_con <= 5'b00011;
   end
   else begin
-    uart_con[3] <= rx_sta;
+    if (rx_sta)  uart_con[3] <= 1'b1;
     uart_con[4] <= tx_sta;
     //uart_con[2] <= tx_en;
     if (wr) begin
