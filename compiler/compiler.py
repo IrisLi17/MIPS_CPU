@@ -324,7 +324,7 @@ def translateFile (assembleFile, outName):
                 if tag:
                     tagDict[tag] = len(codes) - 1 #插入tag-行号键值对，行号从0开始
     f.close()
-    startoffset = 96
+    startoffset = 17
     for lineNumber in range(len(codes)):
         item = codes[lineNumber]
         assert len(item[1])
@@ -342,7 +342,7 @@ def translateFile (assembleFile, outName):
     # fout.close()
     with open(outName,'w') as fout:
         for index in range(len(binCodes)):
-            fout.write(str(startoffset + index)+": Instruction <= "+"32\'b"+str(binCodes[index])+ str("//") + str(codes[index]) + ";\n")
+            fout.write(str(startoffset + index)+": Instruction <= "+"32\'b"+str(binCodes[index])+ str("; // ") + str(codes[index]) + "\n")
     fout.close()
 
-translateFile("InterruptionCode.asm","rom_instructions.v")
+translateFile("gcd_main.asm","gcd_instructions.v")
