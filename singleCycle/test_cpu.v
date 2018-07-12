@@ -26,13 +26,23 @@ module test_cpu();
 		end
 		begin
 			#150005 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;//起始位
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;//结束位
+			#104165 uart_rx <= 1'b0;//起始位
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 			
