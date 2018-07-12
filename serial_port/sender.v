@@ -34,6 +34,7 @@ always @(posedge clk or posedge reset) begin
     remain<=1'b0;
     cur_enable<=1'b0;
     last_enable<=1'b0;
+    out_status <= 1'b0;
   end
   else begin
     cur_enable<=tx_enable;
