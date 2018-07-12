@@ -12,28 +12,29 @@ module test_cpu();
 	CPU cpu1(reset, clk, led, switch, digi, uart_rx, uart_tx);
 	
 	initial begin
-		reset <= 1;
-		#10 reset <= 0;
+		reset <= 0;
+		#10 reset <= 1;
+		#50 reset <= 0;
 		clk <= 1;
 		switch <= 8'b10101010;
 		uart_rx <= 0;
-		#50000 reset <= 1;
+		//#500000 reset <= 1;
 	end
 	initial fork
 		forever begin
 			#5 clk = ~clk;
 		end
-		forever begin
-			#200 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b1;
-			#50 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b1;
-			#50 uart_rx <= 1'b1;
-			#50 uart_rx <= 1'b0;
-			#50 uart_rx <= 1'b1;
+		begin
+			#150005 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
 			
 		end
 	join
