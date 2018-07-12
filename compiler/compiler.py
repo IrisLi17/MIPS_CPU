@@ -49,7 +49,7 @@ def immExt(stringInt, bitNumber = 16):
         return ('{:0' + str(bitNumber) + 'b}').format(2**16 - interger)[-bitNumber:]
 
 
-def assem2code(fields, curIndex = None, tagDict = None):
+def assem2code(fields, curIndex = None, tagDict = None, startoffset = 0):
     assert len(fields)
     instruc = fields[0].lower()
     if instruc == "add":
@@ -105,7 +105,7 @@ def assem2code(fields, curIndex = None, tagDict = None):
         opcode = "000100"
         rs = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        offset = immExt(str(tagDict[fields[3]] - curIndex))
+        offset = immExt(str(tagDict[fields[3]] - curIndex - 1))
         return opcode + rs + rt + offset
     if instruc == "bgtz":
         assert len(fields) == 3
@@ -135,12 +135,12 @@ def assem2code(fields, curIndex = None, tagDict = None):
     if instruc == "j":
         assert len(fields) == 2
         opcode = "000010"
-        target = immExt(str(tagDict[fields[1]]), 26)
+        target = immExt(str(tagDict[fields[1]] + startoffset), 26)
         return opcode + target
     if instruc == "jal":
         assert len(fields) == 2
         opcode = "000011"
-        target = immExt(str(tagDict[fields[1]]), 26)
+        target = immExt(str(tagDict[fields[1]] + startoffset), 26)
         return opcode + target
     if instruc == "jalr":
         # jalr rs
@@ -324,6 +324,7 @@ def translateFile (assembleFile, outName):
                 if tag:
                     tagDict[tag] = len(codes) - 1 #插入tag-行号键值对，行号从0开始
     f.close()
+    startoffset = 17
     for lineNumber in range(len(codes)):
         item = codes[lineNumber]
         assert len(item[1])
@@ -331,7 +332,7 @@ def translateFile (assembleFile, outName):
         instruc = item[1][0].lower()
         if instruc == "beq" or instruc == "bgtz" or instruc == "blez" or instruc == "bltz" or instruc == "bne" \
                 or instruc == "j" or instruc == "jal" :  #补充所有用到tag的指令
-            binCodes.append(assem2code(item[1], lineNumber, tagDict))
+            binCodes.append(assem2code(item[1], lineNumber, tagDict, startoffset))
         else:
             binCodes.append(assem2code(item[1]))
     #output
@@ -341,7 +342,7 @@ def translateFile (assembleFile, outName):
     # fout.close()
     with open(outName,'w') as fout:
         for index in range(len(binCodes)):
-            fout.write("ROMDATA["+str(index)+"] <= 32\'b"+str(binCodes[index])+";\n")
+            fout.write(str(startoffset + index)+": Instruction <= "+"32\'b"+str(binCodes[index])+";\n")
     fout.close()
 
-translateFile("InterruptionCode.asm","rom_instructions.v")
+translateFile("gcd_main.asm","gcd_instructions.v")
