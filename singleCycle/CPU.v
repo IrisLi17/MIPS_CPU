@@ -81,7 +81,7 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 				.rdata(Uart_Read_data),.wdata(Databus2),
 				.uart_rx(uart_rx),.uart_tx(uart_tx));
 	assign Read_data = Mem_Read_data | Per_Read_data | Uart_Read_data;
-	assign Databus3 = (MemtoReg == 2'b00)? Z : (MemtoReg == 2'b01)? Read_data: {1'b0,PC_plus_4[30:0]}; //需要把PC+4写回寄存器的只有jal指令？
+	assign Databus3 = (MemtoReg == 2'b00)? Z : ((MemtoReg == 2'b01)? Read_data: {1'b0,PC_plus_4[30:0]}); //需要把PC+4写回寄存器的只有jal指令？
 	
 	wire [31:0] Jump_target;
 	assign Jump_target = {PC_plus_4[31:28], Instruction[25:0], 2'b00};
