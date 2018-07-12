@@ -9,8 +9,8 @@ ALU ALUs(.A(A),.B(B),.S(S),.Sign(Sign),.ALUFun(ALUFun));
 
 initial
 begin
-A=32'd9;
-B=32'd12;
+A=32'd8;
+B=32'h1ff;
 Sign=1;
 #104160 ALUFun=6'b000000;
 #104160 ALUFun=6'b000001;

@@ -23,7 +23,7 @@ WB_RegWr=0;
 WB_RegDst=0;
 WB_MemtoReg=0;
 WB_WrReg=0;
-WB_PC=0;
+WB_PC=32'h80000000;
 WB_rd=0;
 end
 else begin

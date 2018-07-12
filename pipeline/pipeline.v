@@ -93,6 +93,11 @@ wire [1:0]WB_MemtoReg;
 wire [31:0]WB_PC;
 wire [4:0]WB_rd;
 wire [4:0]WB_Destiny;
+wire IDcontrol_jal;
+wire EXcontrol_jal;
+wire Memcontrol_jal;
+wire [31:0]PCout;
+wire ForwardPC;
 
 Hazard_Unit  Hazard(.reset(reset),.clk(clk),.ID_EX_MemRd(EX_MemRd),.ID_EX_RegRt(EX_rt),.ID_EX_RegRd(EX_rd),
                     .ID_EX_RegWrite(EX_RegWr),.ID_EX_RegDst_0(EX_RegDst[0]),.IF_ID_RegRs(ID_rs),
@@ -102,11 +107,11 @@ Hazard_Unit  Hazard(.reset(reset),.clk(clk),.ID_EX_MemRd(EX_MemRd),.ID_EX_RegRt(
 
 Forward_Unit Forward(.clk(clk),.reset(reset),.EX_MEM_RegWrite(Mem_RegWr),.EX_MEM_RegRd(Mem_WrReg),.ID_EX_RegRs(EX_rs),
                      .ID_EX_RegRt(EX_rt),.MEM_WB_RegWrite(WB_RegWr),.MEM_WB_RegRd(WB_WrReg),.IDControl_Branch(Branch),
-                     .IF_ID_RegRs(ID_rs),.IF_ID_RegRt(ID_rt),
-                     .ForwardA(ForwardA),.ForwardB(ForwardB),.ForwardC(ForwardC),.ForwardD(ForwardD));
+                     .IF_ID_RegRs(ID_rs),.IF_ID_RegRt(ID_rt),.Memcontrol_jal(Memcontrol_jal),.PCSrc(PCSrc),
+                     .ForwardA(ForwardA),.ForwardB(ForwardB),.ForwardC(ForwardC),.ForwardD(ForwardD),.ForwardPC(ForwardPC));
 
-pipeline_IF IF_pipeline(.clk(clk),.IRQ(IRQ),.reset(reset),.stall(stall),.PCSrc(PCSrc),.ConBA(ConBA),
-                        .ALUOut0(ALUOut0),.ID_BusA(ID_BusA),.PC(PC),.IF_PC(IF_PC),.JT(JT));
+pipeline_IF IF_pipeline(.clk(clk),.IRQ(IRQ),.reset(reset),.stall(stall),.PCSrc(PCSrc),.ConBA(ConBA),.ForwardPC(ForwardPC),
+                        .ALUOut0(ALUOut0),.ID_BusA(PCout),.PC(PC),.IF_PC(IF_PC),.JT(JT),.Mem_PC(Mem_PC));
 
 InstructionMemory MemoryInstruction(.Address(PC), .Instruction(instruction));
 
@@ -116,8 +121,8 @@ IFID_reg reg_IFID(.clk(clk),.reset(reset),.stall(stall),.IFID_flush(IFID_flush),
 pipeline_ID ID_pipeline(.clk(clk),.reset(reset),.ID_PC(ID_PC),.ID_instruction(ID_instruction),.IRQ(IRQ),
                  .PCSrc(PCSrc),.ID_rs(ID_rs),.ID_RegDst(ID_RegDst),.ID_RegWr(ID_RegWr),.ALUSrc1(ALUSrc1),.ALUSrc2(ALUSrc2),
                  .ID_ALUFun(ID_ALUFun),.ID_Sign(ID_Sign),.ID_MemWr(ID_MemWr),.ID_MemRd(ID_MemRd),.ID_MemToReg(ID_MemToReg),
-                 .EXTOp(EXTOp),.LUOp(LUOp),.ConBA(ConBA),.JT(JT),.ID_BusA(ID_BusA),.ID_BusB(ID_BusB),
-                 .ALUout0(ALUOut0),.WB_RegWr(WB_RegWr),.ID_WrReg(ID_WrReg),.Branch(Branch),
+                 .EXTOp(EXTOp),.LUOp(LUOp),.ConBA(ConBA),.JT(JT),.ID_BusA(ID_BusA),.ID_BusB(ID_BusB),.PCout(PCout),
+                 .ALUout0(ALUOut0),.WB_RegWr(WB_RegWr),.ID_WrReg(ID_WrReg),.Branch(Branch),.IDcontrol_jal(IDcontrol_jal),
                  .WB_Destiny(WB_Destiny),.ID_rt(ID_rt),.ID_rd(ID_rd),.WB_out(WB_out),.Mem_in(Mem_in),
                  .ForwardC(ForwardC),.ForwardD(ForwardD),.IDcontrol_Jump(IDcontrol_Jump),.IDcontrol_Branch(IDcontrol_Branch));
 
@@ -127,14 +132,14 @@ IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_
                 .ID_BusB(ID_BusB),.EX_BusB(EX_BusB),.ID_RegDst(ID_RegDst),.EX_RegDst(EX_RegDst),
                 .ID_MemtoReg(ID_MemToReg),.EX_MemtoReg(EX_MemtoReg),.ID_WrReg(ID_WrReg),.EX_WrReg(EX_WrReg),
                 .ID_PC(ID_PC),.EX_PC(EX_PC),.ID_rt(ID_rt),.EX_rt(EX_rt),.ID_rd(ID_rd),.EX_rd(EX_rd),
-                .ID_rs(ID_rs),.EX_rs(EX_rs));
+                .ID_rs(ID_rs),.EX_rs(EX_rs),.IDcontrol_jal(IDcontrol_jal),.EXcontrol_jal(EXcontrol_jal));
 
 pipeline_EX EX_pipeline(.ForwardA(ForwardA),.ForwardB(ForwardB),.EX_ALUFun(EX_ALUFun),
                        .Sign(Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_inA),
                        .EXMEMdata(Mem_in),.EX_BusB(EX_BusB),.EX_BusA(EX_BusA));
 
-EXMEM_reg reg_EXMEM(.clk(clk),.reset(reset),.EX_ALUout(EX_ALUOut),.Mem_in(Mem_in),
-                    .EX_MemWr(EX_MemWr),.Mem_MemWr(Mem_MemWr),.EX_MemRd(EX_MemRd),
+EXMEM_reg reg_EXMEM(.clk(clk),.reset(reset),.EX_ALUout(EX_ALUOut),.Mem_in(Mem_in),.EXcontrol_jal(EXcontrol_jal),
+                    .EX_MemWr(EX_MemWr),.Mem_MemWr(Mem_MemWr),.EX_MemRd(EX_MemRd),.Memcontrol_jal(Memcontrol_jal),
                     .Mem_MemRd(Mem_MemRd),.EX_BusB(EX_BusB),.Mem_BusB(Mem_BusB),
                     .EX_RegWr(EX_RegWr),.Mem_RegWr(Mem_RegWr),.EX_MemtoReg(EX_MemtoReg),.Mem_MemtoReg(Mem_MemtoReg),
                     .EX_RegDst(EX_RegDst),.Mem_RegDst(Mem_RegDst),.EX_WrReg(EX_WrReg),.Mem_WrReg(Mem_WrReg),

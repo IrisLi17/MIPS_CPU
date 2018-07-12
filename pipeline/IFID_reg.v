@@ -5,7 +5,7 @@ output reg[31:0]ID_PC,ID_instruction;
 always@(posedge reset or posedge clk)
 begin
 if(reset) begin
-ID_PC=32'h00000000;
+ID_PC=32'h80000000;
 ID_instruction=32'b0;
 end
 else begin
