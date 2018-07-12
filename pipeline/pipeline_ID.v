@@ -8,15 +8,16 @@ module pipeline_ID(clk,reset,
                    ID_MemToReg,EXTOp,
                    LUOp,ConBA,JT,
                    ID_BusA,ID_BusB,
-                   ALUout0,
+                   ALUout0,IDcontrol_jal,
                    WB_RegWr,ID_WrReg,
                    WB_Destiny,ID_rt,ID_rd,
-                   WB_out,Mem_in,
+                   WB_out,Mem_in,PCout,
                    ForwardC,ForwardD,
                    IDcontrol_Jump,IDcontrol_Branch,Branch);
 input IRQ,clk,reset,WB_RegWr;
 input[31:0]ID_PC,ID_instruction,WB_out,Mem_in;
 input[4:0]WB_Destiny;
+output [31:0]PCout;
 output[2:0]PCSrc;
 output[1:0]ID_RegDst,ID_MemToReg;
 output ID_RegWr,ALUSrc1,ALUSrc2,ID_Sign,ID_MemWr,ID_MemRd,EXTOp,LUOp;
@@ -28,6 +29,7 @@ output[25:0]JT;//??jump??
 output[4:0]ID_WrReg,ID_rt,ID_rd,ID_rs;
 output IDcontrol_Jump,IDcontrol_Branch;
 output Branch;
+output IDcontrol_jal;
 
 wire [4:0]shamt;
 wire [31:0]data1,data2,immidiate;
@@ -39,6 +41,7 @@ assign imm=ID_instruction[15:0];
 assign ID_rs=ID_instruction[25:21];
 assign ID_rt=ID_instruction[20:16];
 assign ID_rd=ID_instruction[15:11];
+assign IDcontrol_jal=(ID_instruction[31:26]==3) ? 1:0;
 
 Control control1(
 		.Instruct(ID_instruction), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),
@@ -51,6 +54,7 @@ RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr),
 		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
 		.Write_data(WB_out), .Read_data1(data1), .Read_data2(data2));
 
+assign PCout=data1;
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;
 assign ConBA={14'b0,imm,2'b00}+ID_PC;
 assign immidiate=LUOp ? {imm,16'b0}:

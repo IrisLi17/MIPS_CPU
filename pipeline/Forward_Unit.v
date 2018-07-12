@@ -16,11 +16,14 @@ module Forward_Unit (
   input IDControl_Branch,
   input [4:0]IF_ID_RegRs,
   input [4:0]IF_ID_RegRt,
+  input Memcontrol_jal,
+  input [2:0]PCSrc,
 
   output reg [1:0] ForwardA,
   output reg [1:0] ForwardB,
   output reg ForwardC,
-  output reg ForwardD
+  output reg ForwardD,
+  output reg ForwardPC//jal-jr
 );
 
 always @(*) begin
@@ -42,6 +45,7 @@ always @(*) begin
 
     ForwardC <= (IDControl_Branch && (EX_MEM_RegRd!=0)&&(EX_MEM_RegRd==IF_ID_RegRs));
     ForwardD <= (IDControl_Branch && (EX_MEM_RegRd!=0)&&(EX_MEM_RegRd==IF_ID_RegRt));
+    ForwardPC <=(PCSrc==3 && Memcontrol_jal==1) ?1:0;
   end
 end
 

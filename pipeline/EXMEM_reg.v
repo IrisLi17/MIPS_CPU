@@ -9,11 +9,14 @@ module EXMEM_reg(clk,reset,
                  EX_WrReg,Mem_WrReg,
                  EX_PC,Mem_PC,
                  EX_rt,Mem_rt,
+                 EXcontrol_jal,Memcontrol_jal,
                  EX_rd,Mem_rd);
 input clk,reset,EX_MemWr,EX_MemRd,EX_RegWr;
 input[31:0]EX_ALUout,EX_BusB,EX_PC;
 input[1:0]EX_MemtoReg,EX_RegDst;
 input[4:0]EX_WrReg,EX_rt,EX_rd;
+input EXcontrol_jal;
+output reg Memcontrol_jal;
 output reg[4:0]Mem_WrReg,Mem_rt,Mem_rd;
 output reg[1:0]Mem_MemtoReg,Mem_RegDst;
 output reg Mem_MemWr,Mem_MemRd,Mem_RegWr;
@@ -28,9 +31,10 @@ Mem_MemtoReg=0;
 Mem_WrReg=0;
 Mem_RegWr=0;
 Mem_RegDst=0;
-Mem_PC=0;
+Mem_PC=32'h80000000;
 Mem_rt=0;
 Mem_rd=0;
+Memcontrol_jal=0;
 end
 else begin
 Mem_MemWr=EX_MemWr;
@@ -44,6 +48,7 @@ Mem_RegDst=EX_RegDst;
 Mem_PC=EX_PC;
 Mem_rt=EX_rt;
 Mem_rd=EX_rd;
+Memcontrol_jal=EXcontrol_jal;
 end
 end
 endmodule
