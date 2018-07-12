@@ -111,26 +111,26 @@ def assem2code(fields, curIndex = None, tagDict = None, startoffset = 0):
         assert len(fields) == 3
         opcode = "000111"
         rs = reg2code(fields[1][1:])
-        offset = immExt(str(tagDict[fields[2]] - curIndex))
+        offset = immExt(str(tagDict[fields[2]] - curIndex - 1))
         return opcode + rs + "00000" + offset
     if instruc == "blez":
         assert len(fields) == 3
         opcode = "000110"
         rs = reg2code(fields[1][1:])
-        offset = immExt(str(tagDict[fields[2]] - curIndex))
+        offset = immExt(str(tagDict[fields[2]] - curIndex - 1))
         return opcode + rs + "00000" + offset
     if instruc == "bltz":
         assert len(fields) == 3
         opcode = "000001"
         rs = reg2code(fields[1][1:])
-        offset = immExt(str(tagDict[fields[2]] - curIndex))
+        offset = immExt(str(tagDict[fields[2]] - curIndex - 1))
         return opcode + rs + "00000" + offset
     if instruc == "bne":
         assert len(fields) == 4
         opcode = "000101"
         rs = reg2code(fields[1][1:])
         rt = reg2code(fields[2][1:])
-        offset = immExt(str(tagDict[fields[3]] - curIndex))
+        offset = immExt(str(tagDict[fields[3]] - curIndex - 1))
         return opcode + rs + rt + offset
     if instruc == "j":
         assert len(fields) == 2
