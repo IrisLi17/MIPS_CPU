@@ -60,8 +60,9 @@ add     $t6, $t5, $t3 #forwarding
 sw      $t6, 20($t0) #forwarding
 
 lw      $t1, 8($t0)
-ori     $t2, $t1, 0x0002
-sw      $t2, 8($t0)
+addi    $t2, $zero, 0x0002
+or      $t3, $t1, $t2
+sw      $t3, 8($t0)
 
 lw      $t0, 0($sp)
 lw      $t1, 4($t1)
