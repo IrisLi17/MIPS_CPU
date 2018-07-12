@@ -1,7 +1,7 @@
 lui     $t5, 0x4000
 sw      $zero, 8($t5)
 lui     $t4, 0xffff
-addi    $t4, $zero, 0xf000
+addi    $t4, $zero, 0xe000
 sw      $t4, 0($t5)
 nor     $t6, $zero, $zero
 sw      $t6, 4($t5)
