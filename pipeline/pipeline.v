@@ -126,7 +126,11 @@ pipeline_ID ID_pipeline(.clk(clk),.reset(reset),.ID_PC(ID_PC),.ID_instruction(ID
                  .WB_Destiny(WB_Destiny),.ID_rt(ID_rt),.ID_rd(ID_rd),.WB_out(WB_out),.Mem_in(Mem_in),
                  .ForwardC(ForwardC),.ForwardD(ForwardD),.IDcontrol_Jump(IDcontrol_Jump),.IDcontrol_Branch(IDcontrol_Branch),
                  .ID_shamt(ID_shamt),.ID_imm(ID_imm));
-
+wire [4:0] EX_shamt;
+wire [15:0] EX_imm;
+wire EX_ALUSrc1, EX_ALUSrc2, EX_EXTOp, EX_LUOp;
+wire [31:0] EX_dataA;
+wire [31:0] EX_dataB;
 IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_MemWr(EX_MemWr),
                 .ID_RegWr(ID_RegWr),.EX_RegWr(EX_RegWr),.ID_MemRd(ID_MemRd),.EX_MemRd(EX_MemRd),
                 .ID_ALUFun(ID_ALUFun),.EX_ALUFun(EX_ALUFun),.ID_shamt(ID_shamt),.ID_imm(ID_imm),
@@ -138,11 +142,7 @@ IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_
                 .EX_shamt(EX_shamt),.EX_imm(EX_imm),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),
                 .EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),.EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp));
 
-wire [4:0] EX_shamt;
-wire [15:0] EX_imm;
-wire EX_ALUSrc1, EX_ALUSrc2, EX_EXTOp, EX_LUOp;
-wire [31:0] EX_dataA;
-wire [31:0] EX_dataB;
+
 
 pipeline_EX EX_pipeline(.ForwardA(ForwardA),.ForwardB(ForwardB),.EX_ALUFun(EX_ALUFun),
                        .Sign(Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_inA),

@@ -18,7 +18,6 @@ input IRQ,clk,reset,WB_RegWr;
 input[31:0]ID_PC,ID_instruction,WB_out,Mem_in;
 input[4:0]WB_Destiny;
 output [31:0]PCout;
-output [31:0]ID_Memin;
 output[2:0]PCSrc;
 output[1:0]ID_RegDst,ID_MemToReg;
 output ID_RegWr,ID_Sign,ID_MemWr,ID_MemRd,EXTOp,LUOp;
@@ -58,7 +57,7 @@ RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr),
 
 assign PCout=data1;
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;
-assign ConBA={14'b0,imm,2'b00}+ID_PC;
+assign ConBA={14'b0,ID_imm,2'b00}+ID_PC;
 assign ID_dataA=(ForwardC) ? Mem_in:data1;
 assign ID_dataB=(ForwardD) ? Mem_in:data2;
 
@@ -81,10 +80,10 @@ assign IDcontrol_Jump=( (ID_instruction[31:26]==0 & (ID_instruction[5:0]==8 | ID
                        (ID_instruction[31:26]==2 | ID_instruction[31:26]==3)) ? 1:0;
 assign Branch=((ID_instruction[31:26]==1)|(ID_instruction[31:26]==4)|(ID_instruction[31:26]==5)|
                (ID_instruction[31:26]==6)|(ID_instruction[31:26]==7) )? 1:0;
-assign IDcontrol_Branch=((ID_instruction[31:26]==1 & dataA[31]==1) |//bltz
-            (ID_instruction[31:26]==4 & dataA==dataB) |//beq
-            (ID_instruction[31:26]==5 & dataA!=dataB) |//bne
-            (ID_instruction[31:26]==6 & (dataA[31]==1|dataA==0) )     |//blez
-            (ID_instruction[31:26]==7 & dataA[31]==0 & dataA!=0)) ? 1:0;//bgtz
+assign IDcontrol_Branch=((ID_instruction[31:26]==1 & ID_dataA[31]==1) |//bltz
+            (ID_instruction[31:26]==4 & ID_dataA==ID_dataB) |//beq
+            (ID_instruction[31:26]==5 & ID_dataA!=ID_dataB) |//bne
+            (ID_instruction[31:26]==6 & (ID_dataA[31]==1|ID_dataA==0) )     |//blez
+            (ID_instruction[31:26]==7 & ID_dataA[31]==0 & ID_dataA!=0)) ? 1:0;//bgtz
 assign ALUout0=(IDcontrol_Branch) ? 0:1;
 endmodule

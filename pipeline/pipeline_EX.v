@@ -1,8 +1,8 @@
 module pipeline_EX(ForwardA,ForwardB,EX_ALUFun,Sign,EX_ALUOut,MEMWBdata,EXMEMdata,
-                   EX_ALUSrc1, EX_ALUSrc2, EX_imm, EX_shamt, EX_dataA, EX_dataB);
+                   EX_ALUSrc1, EX_ALUSrc2, EX_imm, EX_shamt, EX_dataA, EX_dataB,EX_EXTOp,EX_LUOp);
 input Sign;
 input [1:0]ForwardA,ForwardB;
-input [31:0]EX_BusA,EX_BusB,MEMWBdata;
+input [31:0]MEMWBdata;
 input [31:0]EXMEMdata;
 input EX_ALUSrc1, EX_ALUSrc2;
 input EX_EXTOp, EX_LUOp;
