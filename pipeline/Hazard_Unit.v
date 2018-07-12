@@ -18,6 +18,7 @@ module Hazard_Unit(
   input [4:0]IF_ID_RegRt,
   input IDcontrol_Branch,
   input IDcontrol_Jump,  
+  input irq,
 
   output  ID_EX_Clear, // 1代表清空ID_EX寄存器
   output  IF_ID_Clear  // 1代表清空IF/ID寄存器
@@ -67,7 +68,7 @@ assign ID_EX_Clear=(reset | (IDcontrol_Jump)) ? 0:
          ((IF_ID_RegRt==ID_EX_RegRd) && ~ID_EX_RegDst_0) ) 
          ) ) ? 1:0;
 assign IF_ID_Clear=(reset | (ID_EX_MemRd && ( (ID_EX_RegRt==IF_ID_RegRs) || (ID_EX_RegRt==IF_ID_RegRt) ) )) ? 0:
-(IDcontrol_Jump) ? 1://jump
+(IDcontrol_Jump || irq) ? 1://jump
 ( (IDcontrol_Branch) & ~(ID_EX_RegWrite && (//branch
          ((IF_ID_RegRs==ID_EX_RegRt) &&  ID_EX_RegDst_0) || 
          ((IF_ID_RegRs==ID_EX_RegRd) && ~ID_EX_RegDst_0) || 

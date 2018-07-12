@@ -6,6 +6,8 @@ output [31:0]WB_out;
 output [4:0]WB_Destiny;
 assign WB_out=(WB_MemtoReg==0) ? WB_inA:
               (WB_MemtoReg==1) ? WB_inB:
-              (WB_MemtoReg==2) ? WB_PC:0;
-assign WB_Destiny=(WB_RegDst==2) ? 31:WB_WrReg;
+              (WB_MemtoReg==2) ? {1'b0, WB_PC[30:0]}:
+              ({1'b0, WB_PC[30:0]} - 4);
+assign WB_Destiny=(WB_RegDst==2) ? 31:
+                  (WB_RegDst==3) ? 26: WB_WrReg;
 endmodule
