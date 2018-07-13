@@ -19,16 +19,16 @@ initial begin
   status<=2'b00;
   baud_count<=7'd0;
   out_status<=1'b0;
-  temp_data<=7'b1111111;
-  data<=7'b1111111;
+  temp_data<=8'b11111111;
+  data<=8'b11111111;
 end
 always @(posedge clk or posedge reset) begin
   if(reset == 1'b1) begin
     status<=2'b00;
     baud_count<=7'd0;
     out_status<=1'b0;
-    temp_data<=7'b1111111;
-    data<=7'b1111111;
+    temp_data<=8'b11111111;
+    data<=8'b11111111;
   end
   else if (out_status == 1'b1) begin
     out_status <= 1'b0; //只希望输出一个串口时钟的高电平，防止上层uart_con[3]总是被置为1

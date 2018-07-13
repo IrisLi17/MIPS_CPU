@@ -77,7 +77,7 @@ always @(posedge clk or posedge reset) begin
           status<=2'b00;
           out_status<=1'b0;
           //lock<=1'b0;
-          tx_buffer<=7'b1111111;
+          tx_buffer<=8'b11111111;
           baud_count<=7'd0;
         end
         else begin
