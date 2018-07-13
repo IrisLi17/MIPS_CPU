@@ -101,13 +101,16 @@ Hazard_Unit  Hazard(.reset(reset),.clk(clk),.ID_EX_MemRd(EX_MemRd),.ID_EX_RegRt(
                     .ID_EX_Clear(stall),.IF_ID_Clear(IFID_flush),.Branch(Branch),.irq(irqout)
 );
 
+wire Forwardsw;
+
 Forward_Unit Forward(.clk(clk),.reset(reset),.EX_MEM_RegWrite(Mem_RegWr),.EX_MEM_RegRd(Mem_WrReg),.ID_EX_RegRs(EX_rs),
                      .ID_EX_RegRt(EX_rt),.MEM_WB_RegWrite(WB_RegWr),.MEM_WB_RegRd(WB_WrReg),.IDControl_Branch(Branch),
                      .IF_ID_RegRs(ID_rs),.IF_ID_RegRt(ID_rt),.Memcontrol_jal(Memcontrol_jal),.PCSrc(PCSrc),
-                     .ForwardA(ForwardA),.ForwardB(ForwardB),.ForwardC(ForwardC),.ForwardD(ForwardD),.ForwardPC(ForwardPC));
+                     .ForwardA(ForwardA),.ForwardB(ForwardB),.ForwardC(ForwardC),.ForwardD(ForwardD),.ForwardPC(ForwardPC),.Forwardsw(Forwardsw),
+                     .EX_MEM_MEMWrite(Mem_MemWr),.EX_MEM_RegRt(Mem_rt),.MEM_WB_Reg(WB_WrReg));
 
 pipeline_IF IF_pipeline(.clk(clk),.reset(reset),.stall(stall),.PCSrc(PCSrc),.ConBA(ConBA),.ForwardPC(ForwardPC),
-                        .ALUOut0(ALUOut0),.ID_BusA(PCout),.PC(PC),.IF_PC(IF_PC),.JT(JT),.EX_PC(EX_PC));
+                        .ALUOut0(ALUOut0),.ID_BusA(PCout),.PC(PC),.IF_PC(IF_PC),.JT(JT),.MEM_PC(Mem_PC));
 
 InstructionMemory MemoryInstruction(.Address(PC), .Instruction(instruction));
 
@@ -158,7 +161,8 @@ EXMEM_reg reg_EXMEM(.clk(clk),.reset(reset),.EX_ALUout(EX_ALUOut),.Mem_in(Mem_in
 
 pipeline_MEM MEM_pipeline(.clk(clk),.reset(reset),.Mem_MemRd(Mem_MemRd),.Mem_MemWr(Mem_MemWr),
                           .Mem_in(Mem_in),.Mem_outA(Mem_outA),.Mem_outB(Mem_outB),.Mem_BusB(Mem_BusB),
-                          .led(led),.switch(switch),.digi(digi),.irqout(irqout),.uart_rx(uart_rx),.uart_tx(uart_tx));
+                          .led(led),.switch(switch),.digi(digi),.irqout(irqout),.uart_rx(uart_rx),.uart_tx(uart_tx),
+                          .Forwardsw(Forwardsw),.WB_dataB(WB_out));
 
 MEMWB_reg reg_MEMWB(.clk(clk),.reset(reset),.Mem_outB(Mem_outB),.WB_inB(WB_inB),.Mem_outA(Mem_outA),
                     .WB_inA(WB_inA),.Mem_RegDst(Mem_RegDst),.WB_RegDst(WB_RegDst),.Mem_RegWr(Mem_RegWr),

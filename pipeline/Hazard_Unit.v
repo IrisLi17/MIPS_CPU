@@ -67,12 +67,32 @@ assign ID_EX_Clear=(reset | (IDcontrol_Jump)) ? 0:
          ((IF_ID_RegRt==ID_EX_RegRt) &&  ID_EX_RegDst_0) || 
          ((IF_ID_RegRt==ID_EX_RegRd) && ~ID_EX_RegDst_0) ) 
          ) ) ? 1:0;
-assign IF_ID_Clear=(reset | (ID_EX_MemRd && ( (ID_EX_RegRt==IF_ID_RegRs) || (ID_EX_RegRt==IF_ID_RegRt) ) )) ? 0:
-(IDcontrol_Jump || irq) ? 1://jump
+         
+wire IF_ID_Clear_temp;
+         
+assign IF_ID_Clear_temp=(reset | (ID_EX_MemRd && ( (ID_EX_RegRt==IF_ID_RegRs) || (ID_EX_RegRt==IF_ID_RegRt) ) )) ? 0:
+(IDcontrol_Jump) ? 1://jump
 ( (IDcontrol_Branch) & ~(ID_EX_RegWrite && (//branch
          ((IF_ID_RegRs==ID_EX_RegRt) &&  ID_EX_RegDst_0) || 
          ((IF_ID_RegRs==ID_EX_RegRd) && ~ID_EX_RegDst_0) || 
          ((IF_ID_RegRt==ID_EX_RegRt) &&  ID_EX_RegDst_0) || 
          ((IF_ID_RegRt==ID_EX_RegRd) && ~ID_EX_RegDst_0) ) 
          ) ) ? 1:0;
+
+reg cur_irq, pre_irq, irq_flush;
+always @(posedge clk or posedge reset) begin
+  if(reset)  begin
+    cur_irq <= 0;
+    pre_irq <= 0;
+    irq_flush  <= 0;
+  end
+  else begin
+    cur_irq <= irq;
+    pre_irq <= cur_irq;
+    irq_flush <= (cur_irq && ~pre_irq);
+  end
+end
+
+assign IF_ID_Clear = IF_ID_Clear_temp || irq_flush;
+
 endmodule

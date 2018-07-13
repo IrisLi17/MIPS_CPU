@@ -21,7 +21,7 @@ assign EX_BusB = EX_ALUSrc2 ? (EX_LUOp ? {EX_imm, 16'b0} : (EX_EXTOp ? (EX_imm[1
 assign Data1=(ForwardA==2'b0) ? EX_BusA :
              (ForwardA==2'b1) ? MEMWBdata :
              (ForwardA==2'b10) ? EXMEMdata : 32'b0;
-assign Data2=(ForwardB==2'b0) ? EX_BusB :
+assign Data2=(ForwardB==2'b0 || EX_ALUSrc2) ? EX_BusB :
              (ForwardB==2'b1) ? MEMWBdata :
              (ForwardB==2'b10) ? EXMEMdata : 32'b0;
 ALU ALUs(.A(Data1),.B(Data2),.Sign(Sign),.ALUFun(EX_ALUFun),.S(EX_ALUOut));
