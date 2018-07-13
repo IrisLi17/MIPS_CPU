@@ -107,7 +107,7 @@ Forward_Unit Forward(.clk(clk),.reset(reset),.EX_MEM_RegWrite(Mem_RegWr),.EX_MEM
                      .ForwardA(ForwardA),.ForwardB(ForwardB),.ForwardC(ForwardC),.ForwardD(ForwardD),.ForwardPC(ForwardPC));
 
 pipeline_IF IF_pipeline(.clk(clk),.reset(reset),.stall(stall),.PCSrc(PCSrc),.ConBA(ConBA),.ForwardPC(ForwardPC),
-                        .ALUOut0(ALUOut0),.ID_BusA(PCout),.PC(PC),.IF_PC(IF_PC),.JT(JT),.Mem_PC(Mem_PC));
+                        .ALUOut0(ALUOut0),.ID_BusA(PCout),.PC(PC),.IF_PC(IF_PC),.JT(JT),.EX_PC(EX_PC));
 
 InstructionMemory MemoryInstruction(.Address(PC), .Instruction(instruction));
 
