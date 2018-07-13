@@ -46,7 +46,7 @@ def immExt(stringInt, bitNumber = 16):
     if  interger >= 0:
         return ('{:0' + str(bitNumber) + 'b}').format(interger)
     else:
-        return ('{:0' + str(bitNumber) + 'b}').format(2**16 - interger)[-bitNumber:]
+        return ('{:0' + str(bitNumber) + 'b}').format(2**16 + interger)[-bitNumber:]
 
 
 def assem2code(fields, curIndex = None, tagDict = None, startoffset = 0):
@@ -324,7 +324,7 @@ def translateFile (assembleFile, outName):
                 if tag:
                     tagDict[tag] = len(codes) - 1 #插入tag-行号键值对，行号从0开始
     f.close()
-    startoffset = 17
+    startoffset = 96
     for lineNumber in range(len(codes)):
         item = codes[lineNumber]
         assert len(item[1])
@@ -345,4 +345,4 @@ def translateFile (assembleFile, outName):
             fout.write(str(startoffset + index)+": Instruction <= "+"32\'b"+str(binCodes[index])+ str("; // ") + str(codes[index]) + "\n")
     fout.close()
 
-translateFile("gcd_main.asm","gcd_instructions.v")
+translateFile("InterruptionCode.asm","rom_instructions.v")
