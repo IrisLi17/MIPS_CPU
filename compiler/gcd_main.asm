@@ -36,5 +36,15 @@ j		compare
 sll     $zero, $zero, 0 # stall
 
 finish: # $s3 is gcd
+lui     $t5,0x4000
 sw		$s3, 24($t5) # uart_txd
 sw      $s3, 12($t5) # led
+j		Exit		 # 手动加机器码
+Exit:
+lui     $t0,0x4000
+lw		$t1, 32($t0)		# $t1 = uart_con
+addi	$t2, $zero, 8			# $t2 = 8
+and     $t1,$t1,$t2
+# sll     $t1,$t1,0
+bne		$t1, $zero, loop
+j		Exit				# jump to Exit
