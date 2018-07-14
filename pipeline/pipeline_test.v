@@ -33,7 +33,16 @@ initial	begin
 			#104165 uart_rx <= 1'b1;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
-			
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
 		end
 
 pipeline pipe(clk,reset,led,switch,uart_rx,uart_tx);
