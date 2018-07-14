@@ -68,7 +68,7 @@ or      $t3, $t1, $t2
 sw      $t3, 8($t0)
 
 lw      $t0, 0($sp)
-lw      $t1, 4($t1)
+lw      $t1, 4($sp)
 lw      $t2, 8($sp)
 lw      $t3, 12($sp)
 lw      $t4, 16($sp)
