@@ -148,7 +148,7 @@ IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_
 
 
 pipeline_EX EX_pipeline(.ForwardA(ForwardA),.ForwardB(ForwardB),.EX_ALUFun(EX_ALUFun),
-                       .Sign(Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_inA),
+                       .Sign(Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_out),
                        .EXMEMdata(Mem_in),.EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),
                        .EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_shamt(EX_shamt),.EX_imm(EX_imm));
 
