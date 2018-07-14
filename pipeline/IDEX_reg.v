@@ -18,6 +18,7 @@ module IDEX_reg(clk,reset,stall, //????load??use??
                 EX_ALUSrc1, EX_ALUSrc2,
                 EX_dataA, EX_dataB,
                 EX_imm, EX_shamt,
+                ID_Sign,EX_Sign,
                 EX_EXTOp, EX_LUOp);
 input clk,reset,stall,ID_MemWr,ID_MemRd,ID_RegWr;//when stall is enable,place MemWr,MenRd and RegWr on zero
 input [5:0]ID_ALUFun;
@@ -31,6 +32,8 @@ input [31:0]ID_dataA;
 input [31:0]ID_dataB;
 input [15:0]ID_imm;
 input ID_EXTOp, ID_LUOp;
+input ID_Sign;
+output reg EX_Sign;
 output reg EXcontrol_jal;
 output reg[31:0]EX_PC;
 output reg[4:0]EX_WrReg,EX_rt,EX_rd,EX_rs;
@@ -65,17 +68,18 @@ EX_dataB <= 32'b0;
 EX_imm <= 16'b0;
 EX_EXTOp <= 0;
 EX_LUOp <= 0;
+EX_Sign<=0;
 end
 else begin
-EX_ALUFun=ID_ALUFun;
-EX_RegDst=ID_RegDst;
-EX_MemtoReg=ID_MemtoReg;
-EX_WrReg=ID_WrReg;
-EX_PC=ID_PC;
-EX_rt=ID_rt;
-EX_rd=ID_rd;
-EX_rs=ID_rs;
-EXcontrol_jal=IDcontrol_jal;
+EX_ALUFun<=ID_ALUFun;
+EX_RegDst<=ID_RegDst;
+EX_MemtoReg<=ID_MemtoReg;
+EX_WrReg<=ID_WrReg;
+EX_PC<=ID_PC;
+EX_rt<=ID_rt;
+EX_rd<=ID_rd;
+EX_rs<=ID_rs;
+EXcontrol_jal<=IDcontrol_jal;
 EX_ALUSrc1 <= ID_ALUSrc1;
 EX_ALUSrc2 <= ID_ALUSrc2;
 EX_shamt <= ID_shamt;
@@ -84,6 +88,7 @@ EX_dataB <= ID_dataB;
 EX_imm <= ID_imm;
 EX_EXTOp <= ID_EXTOp;
 EX_LUOp <= ID_LUOp;
+EX_Sign<=ID_Sign;
 end
 end
 endmodule

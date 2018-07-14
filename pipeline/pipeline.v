@@ -9,7 +9,6 @@ input clk;
 wire reset;
 wire stall;
 wire ALUOut0;
-wire Sign;
 wire [2:0]PCSrc;
 wire [31:0]ConBA;
 wire [31:0]PC;
@@ -56,6 +55,7 @@ wire [4:0]EX_rt;
 wire [4:0]EX_rd;
 wire [4:0]EX_rs;
 wire [31:0]EX_ALUOut;
+wire EX_Sign;
 
 wire [31:0]Mem_in;
 wire Mem_MemWr;
@@ -141,14 +141,14 @@ IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_
                 .ID_MemtoReg(ID_MemToReg),.EX_MemtoReg(EX_MemtoReg),.ID_WrReg(ID_WrReg),.EX_WrReg(EX_WrReg),
                 .ID_PC(ID_PC),.EX_PC(EX_PC),.ID_rt(ID_rt),.EX_rt(EX_rt),.ID_rd(ID_rd),.EX_rd(EX_rd),
                 .ID_rs(ID_rs),.EX_rs(EX_rs),.IDcontrol_jal(IDcontrol_jal),.EXcontrol_jal(EXcontrol_jal),
-                .ID_ALUSrc1(ALUSrc1),.ID_ALUSrc2(ALUSrc2),.ID_EXTOp(EXTOp),.ID_LUOp(LUOp),
-                .EX_shamt(EX_shamt),.EX_imm(EX_imm),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),
+                .ID_ALUSrc1(ALUSrc1),.ID_ALUSrc2(ALUSrc2),.ID_EXTOp(EXTOp),.ID_LUOp(LUOp),.ID_Sign(ID_Sign),
+                .EX_shamt(EX_shamt),.EX_imm(EX_imm),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_Sign(EX_Sign),
                 .EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),.EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp));
 
 
 
 pipeline_EX EX_pipeline(.ForwardA(ForwardA),.ForwardB(ForwardB),.EX_ALUFun(EX_ALUFun),
-                       .Sign(Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_out),
+                       .Sign(EX_Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_out),
                        .EXMEMdata(Mem_in),.EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),
                        .EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_shamt(EX_shamt),.EX_imm(EX_imm));
 
