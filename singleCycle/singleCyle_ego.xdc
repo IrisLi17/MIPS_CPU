@@ -1,7 +1,7 @@
-set_property -dict {PACKAGE_PIN P17 IOSTANDARD LVCMOS33} [get_ports {sys_clk}]
-set_property -dict {PACKAGE_PIN T4 IOSTANDARD LVCMOS33} [get_ports {uart_tx}]
-set_property -dict {PACKAGE_PIN N5 IOSTANDARD LVCMOS33} [get_ports {uart_rx}]
-set_property -dict {PACKAGE_PIN R15 IOSTANDARD LVCMOS33} [get_ports {reset}]
+set_property -dict {PACKAGE_PIN P17 IOSTANDARD LVCMOS33} [get_ports sys_clk]
+set_property -dict {PACKAGE_PIN T4 IOSTANDARD LVCMOS33} [get_ports uart_tx]
+set_property -dict {PACKAGE_PIN N5 IOSTANDARD LVCMOS33} [get_ports uart_rx]
+set_property -dict {PACKAGE_PIN R15 IOSTANDARD LVCMOS33} [get_ports reset]
 
 set_property -dict {PACKAGE_PIN K3 IOSTANDARD LVCMOS33} [get_ports {led[0]}]
 set_property -dict {PACKAGE_PIN M1 IOSTANDARD LVCMOS33} [get_ports {led[1]}]
@@ -30,11 +30,10 @@ set_property -dict {PACKAGE_PIN B3 IOSTANDARD LVCMOS33} [get_ports {digi[5]}]
 set_property -dict {PACKAGE_PIN B2 IOSTANDARD LVCMOS33} [get_ports {digi[6]}]
 set_property -dict {PACKAGE_PIN D5 IOSTANDARD LVCMOS33} [get_ports {digi[7]}]
 
-set_property -dict {PACKAGE_PIN G2 IOSTANDARD LVCMOS33} [get_ports {digi[8]}]
-set_property -dict {PACKAGE_PIN C2 IOSTANDARD LVCMOS33} [get_ports {digi[9]}]
-set_property -dict {PACKAGE_PIN C1 IOSTANDARD LVCMOS33} [get_ports {digi[10]}]
-set_property -dict {PACKAGE_PIN H1 IOSTANDARD LVCMOS33} [get_ports {digi[11]}]
+set_property -dict {PACKAGE_PIN G2 IOSTANDARD LVCMOS33} [get_ports {digi[11]}]
+set_property -dict {PACKAGE_PIN C2 IOSTANDARD LVCMOS33} [get_ports {digi[10]}]
+set_property -dict {PACKAGE_PIN C1 IOSTANDARD LVCMOS33} [get_ports {digi[9]}]
+set_property -dict {PACKAGE_PIN H1 IOSTANDARD LVCMOS33} [get_ports {digi[8]}]
 
-
-set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets {sys_clk}]
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets sys_clk]
 create_clock -period 10.000 -name CLK -waveform {0.000 5.000} [get_ports sys_clk]
