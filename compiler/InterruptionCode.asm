@@ -74,4 +74,4 @@ lw      $t5, 20($sp)
 lw      $t6, 24($sp)
 addi    $sp, $sp, 28
 
-jr		$k0
+jr		$k0					
