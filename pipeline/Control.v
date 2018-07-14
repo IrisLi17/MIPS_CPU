@@ -27,7 +27,7 @@ if (~PC31) begin //user state
     MemRd <= 0;
     MemWr <= 0;
     RegDst <= 2'b11;
-    MemToReg <= 2'b10;
+    MemToReg <= 2'b11;
     PCSrc <= 3'b100;
   end
   else begin

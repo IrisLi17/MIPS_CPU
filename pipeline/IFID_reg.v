@@ -9,9 +9,9 @@ ID_PC=32'h80000000;
 ID_instruction=32'b0;
 end
 else begin
-ID_PC= (stall) ? ID_PC:IF_PC;
-ID_instruction= (stall) ? ID_instruction:
-                (IFID_flush) ? 32'b0:instruction;
+ID_PC= (stall|IFID_flush) ? ID_PC:IF_PC;
+ID_instruction= (IFID_flush) ? 32'b0:
+                (stall) ? ID_instruction:instruction;
 end
 end
 endmodule

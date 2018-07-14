@@ -46,7 +46,7 @@ output reg EX_EXTOp, EX_LUOp;
 always@(posedge clk or posedge reset) begin
 EX_MemWr=(stall|reset) ? 0:ID_MemWr;
 EX_MemRd=(stall|reset) ? 0:ID_MemRd;
-EX_RegWr=(stall|reset) ? 0:ID_RegWr;
+EX_RegWr=((stall|reset) & ID_RegDst!=3)? 0:ID_RegWr;
 if(reset) begin
 EX_ALUFun=0;
 EX_RegDst=0;
