@@ -16,6 +16,7 @@ reg [7:0] uart_txd;
 reg [4:0] uart_con;
 wire rx_sta;
 wire tx_sta;
+reg pre_tx_sta;
 //wire tx_en;
 
 
@@ -32,10 +33,15 @@ assign rdata = rd?((addr == 32'h40000018)?{24'b0,uart_txd}:
 always @(posedge reset or posedge cpu_clk) begin
   if (reset) begin
     uart_con <= 5'b00011;
+    pre_tx_sta <= 1'b0;
   end
   else begin
+    pre_tx_sta <= tx_sta;
     if (rx_sta)  uart_con[3] <= 1'b1;
-    uart_con[4] <= tx_sta;
+    if (tx_sta == 1'b0 && pre_tx_sta == 1'b1) begin
+        uart_con[4] <= 1'b0;
+        uart_con[2] <= 1'b0;
+    end
     //uart_con[2] <= tx_en;
     if (wr) begin
         case(addr)
