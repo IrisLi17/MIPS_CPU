@@ -20,12 +20,13 @@ sw      $t1, 8($t0)
 lw      $t1, 32($t0) #forwarding
 andi    $t2, $t1, 0x0008 #forwarding
 beq     $t2, $zero, noload #forwarding
-beq     $s0, $zero, loads0 #如果$s0==0，那么向$s0加载数据，否则向$s1加载数据
+beq     $s5, $zero, loads0 #如果$s0==0，那么向$s0加载数据，否则向$s1加载数据
 lw      $s1, 28($t0)
+addi    $s6, $s1, 0
 j		noload
 loads0:
 lw      $s0, 28($t0)
-
+addi    $s5, $s0, 0 #s5,s6为gcd中清零准备
 
 #其次实现数码管的扫描显示
 noload:
@@ -45,7 +46,7 @@ j       finish
 
 target2:
 andi    $t2, $t1, 0x0400 #forwarding
-beq     $t2, $t1, target3 #elseif... #forwarding
+beq     $t2, $zero, target3 #elseif... #forwarding
 addi    $t3, $zero, 0x0800 #即将点亮AN3
 srl     $t4, $s0, 4
 j		finish			
@@ -73,4 +74,4 @@ lw      $t5, 20($sp)
 lw      $t6, 24($sp)
 addi    $sp, $sp, 28
 
-jr		$k0					
+jr		$k0
