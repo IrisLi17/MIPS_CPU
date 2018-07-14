@@ -5,7 +5,7 @@ module CPU(reset, sys_clk, led, switch, digi, uart_rx, uart_tx);
 	output [11:0] digi;
 	input uart_rx;
 	output uart_tx;
-
+	
 	wire clk;
 	cpu_clk cpu_clk(.sys_clk(sys_clk),.clk(clk));
 	
