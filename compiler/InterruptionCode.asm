@@ -20,8 +20,9 @@ sw      $t1, 8($t0)
 lw      $t1, 32($t0) #forwarding
 andi    $t2, $t1, 0x0008 #forwarding
 beq     $t2, $zero, noload #forwarding
-beq     $s5, $zero, loads0 #如果$s0==0，那么向$s0加载数据，否则向$s1加载数据
-lw      $s1, 28($t0)
+beq     $s5, $zero, loads0 #如果$s5==0，那么向$s5加载数据，否则检查$s6
+bne     $s6, $zero, noload #如果$s5,$s6都不为0，那么暂不load新数据
+lw      $s1, 28($t0) #开始load第二个操作数
 addi    $s6, $s1, 0
 j		noload
 loads0:
@@ -56,6 +57,7 @@ addi    $t3, $zero, 0x0100 #即将点亮AN0
 andi    $t4, $s1, 0x000F
 
 finish:
+sll     $t4, $t4, 2 # 取址按字
 lw      $t5, 0($t4) #forwarding
 add     $t6, $t5, $t3 #forwarding
 sw      $t6, 20($t0) #forwarding
