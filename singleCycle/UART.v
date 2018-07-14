@@ -17,6 +17,7 @@ reg [4:0] uart_con;
 wire rx_sta;
 wire tx_sta;
 reg pre_tx_sta;
+reg pre_rx_sta;
 //wire tx_en;
 
 
@@ -34,10 +35,12 @@ always @(posedge reset or posedge cpu_clk) begin
   if (reset) begin
     uart_con <= 5'b00011;
     pre_tx_sta <= 1'b0;
+    pre_rx_sta <= 1'b0;
   end
   else begin
     pre_tx_sta <= tx_sta;
-    if (rx_sta)  uart_con[3] <= 1'b1;
+    pre_rx_sta <= rx_sta;
+    if (rx_sta && pre_rx_sta == 1'b0)  uart_con[3] <= 1'b1;
     if (tx_sta == 1'b0 && pre_tx_sta == 1'b1) begin
         uart_con[4] <= 1'b0;
         uart_con[2] <= 1'b0;
