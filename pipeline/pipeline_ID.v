@@ -53,10 +53,16 @@ Control control1(
 		.MemToReg(ID_MemToReg),.EXTOp(EXTOp),.LUOp(LUOp)
 	);
 
+
+wire [31:0] RF_ReadData1, RF_ReadData2;
+
 RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr), 
 		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
 		.Write_data(WB_out), .Read_data1(data1), .Read_data2(data2),
         .sp_monitor(sp_monitor));
+
+assign data1 = (WB_RegWr && WB_Destiny==ID_instruction[25:21]) ? WB_out : RF_ReadData1;
+assign data2 = (WB_RegWr && WB_Destiny==ID_instruction[20:16]) ? WB_out : RF_ReadData2;
 
 assign PCout=data1;
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;
