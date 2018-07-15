@@ -14,14 +14,14 @@ module pipeline_ID(clk,reset,
                    WB_out,Mem_in,PCout,
                    ForwardC,ForwardD,
                    IDcontrol_Jump,IDcontrol_Branch,Branch,ID_shamt,ID_imm);
-input IRQ,clk,reset,WB_RegWr;
+input IRQ,clk,reset,WB_RegWr,ForwardC,ForwardD;
 input[31:0]ID_PC,ID_instruction,WB_out,Mem_in;
 input[4:0]WB_Destiny;
 output [31:0]PCout;
 output[2:0]PCSrc;
 output[1:0]ID_RegDst,ID_MemToReg;
 output ID_RegWr,ID_Sign,ID_MemWr,ID_MemRd,EXTOp,LUOp;
-output ALUout0,ForwardC,ForwardD;
+output ALUout0;
 output[5:0]ID_ALUFun;
 output[31:0]ConBA;//branch??
 output[31:0]ID_dataA,ID_dataB;
