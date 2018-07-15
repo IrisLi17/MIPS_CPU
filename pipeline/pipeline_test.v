@@ -1,13 +1,15 @@
 `timescale 1ps/1ps
 module pipeline_test;
 reg clk;
-wire [7:0]led,switch;
+//wire [7:0]led;
+wire [7:0]switch;
 wire [11:0]digi;
 reg reset;
 reg uart_rx;
 
 wire uart_tx;
 wire uart_rx_connect;
+wire [7:0]temp1,temp2;
 
 assign  uart_rx_connect = uart_rx;
 
@@ -67,5 +69,5 @@ initial	begin
 			#104165 uart_rx <= 1'b1;
 		end
 
-pipeline pipe(clk,reset,led,switch,digi,uart_rx,uart_tx);
+pipeline pipe(clk,reset,switch,digi,uart_rx,uart_tx,temp1,temp2);
 endmodule

@@ -1,12 +1,14 @@
-module pipeline(clk,reset,led,switch,digi,uart_rx,uart_tx);
+module pipeline(sys_clk,reset,switch,digi,uart_rx,uart_tx,temp1,temp2);
 input reset;
 input uart_rx;
 input [7:0]switch;
 output uart_tx;
-output [7:0]led;
+//output [7:0]led;
 output [11:0]digi;
+output[7:0] temp1,temp2;
 
-input clk;
+input sys_clk;
+wire clk;
 wire reset;
 wire stall;
 wire ALUOut0;
@@ -96,6 +98,9 @@ wire [31:0]PCout;
 wire ForwardPC;
 wire [31:0]EX_Memin;
 wire [31:0]ID_Memin;
+
+cpu_clk cpu_clk(.sys_clk(sys_clk),.clk(clk));
+
 Hazard_Unit  Hazard(.reset(reset),.clk(clk),.ID_EX_MemRd(EX_MemRd),.ID_EX_RegRt(EX_rt),.ID_EX_RegRd(EX_rd),
                     .ID_EX_RegWrite(EX_RegWr),.ID_EX_RegDst_0(EX_RegDst[0]),.IF_ID_RegRs(ID_rs),
                     .IF_ID_RegRt(ID_rt),.IDcontrol_Branch(IDcontrol_Branch),.IDcontrol_Jump(IDcontrol_Jump),  
@@ -129,7 +134,8 @@ pipeline_ID ID_pipeline(.clk(clk),.reset(reset),.ID_PC(ID_PC),.ID_instruction(ID
                  .ALUout0(ALUOut0),.WB_RegWr(WB_RegWr),.ID_WrReg(ID_WrReg),.Branch(Branch),.IDcontrol_jal(IDcontrol_jal),
                  .WB_Destiny(WB_Destiny),.ID_rt(ID_rt),.ID_rd(ID_rd),.WB_out(WB_out),.Mem_in(Mem_in),
                  .ForwardC(ForwardC),.ForwardD(ForwardD),.IDcontrol_Jump(IDcontrol_Jump),.IDcontrol_Branch(IDcontrol_Branch),
-                 .ID_shamt(ID_shamt),.ID_imm(ID_imm));
+                 .ID_shamt(ID_shamt),.ID_imm(ID_imm),
+                 .temp1(temp1),.temp2(temp2));
 wire [4:0] EX_shamt;
 wire [15:0] EX_imm;
 wire EX_ALUSrc1, EX_ALUSrc2, EX_EXTOp, EX_LUOp;
@@ -160,7 +166,7 @@ EXMEM_reg reg_EXMEM(.clk(clk),.reset(reset),.EX_ALUout(EX_ALUOut),.Mem_in(Mem_in
                     .EX_RegDst(EX_RegDst),.Mem_RegDst(Mem_RegDst),.EX_WrReg(EX_WrReg),.Mem_WrReg(Mem_WrReg),
                     .EX_PC(EX_PC),.Mem_PC(Mem_PC),.EX_rt(EX_rt),.Mem_rt(Mem_rt),.EX_rd(EX_rd),.Mem_rd(Mem_rd));
 
-pipeline_MEM MEM_pipeline(.clk(clk),.reset(reset),.Mem_MemRd(Mem_MemRd),.Mem_MemWr(Mem_MemWr),
+pipeline_MEM MEM_pipeline(.sys_clk(sys_clk),.clk(clk),.reset(reset),.Mem_MemRd(Mem_MemRd),.Mem_MemWr(Mem_MemWr),
                           .Mem_in(Mem_in),.Mem_outA(Mem_outA),.Mem_outB(Mem_outB),.Mem_BusB(Mem_BusB),
                           .led(led),.switch(switch),.digi(digi),.irqout(irqout),.uart_rx(uart_rx),.uart_tx(uart_tx),
                           .Forwardsw(Forwardsw),.WB_dataB(WB_out));
