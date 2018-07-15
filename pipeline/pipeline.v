@@ -152,16 +152,17 @@ IDEX_reg reg_IDEX(.clk(clk),.reset(reset),.stall(stall),.ID_MemWr(ID_MemWr),.EX_
                 .EX_shamt(EX_shamt),.EX_imm(EX_imm),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_Sign(EX_Sign),
                 .EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),.EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp));
 
-
+wire [31:0] EX_rt_postForward;
 
 pipeline_EX EX_pipeline(.ForwardA(ForwardA),.ForwardB(ForwardB),.EX_ALUFun(EX_ALUFun),
                        .Sign(EX_Sign),.EX_ALUOut(EX_ALUOut),.MEMWBdata(WB_out),
                        .EXMEMdata(Mem_in),.EX_ALUSrc1(EX_ALUSrc1),.EX_ALUSrc2(EX_ALUSrc2),
-                       .EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_shamt(EX_shamt),.EX_imm(EX_imm));
+                       .EX_EXTOp(EX_EXTOp),.EX_LUOp(EX_LUOp),.EX_dataA(EX_dataA),.EX_dataB(EX_dataB),.EX_shamt(EX_shamt),.EX_imm(EX_imm),
+                       .EX_rt_postForward(EX_rt_postForward));
 
 EXMEM_reg reg_EXMEM(.clk(clk),.reset(reset),.EX_ALUout(EX_ALUOut),.Mem_in(Mem_in),.EXcontrol_jal(EXcontrol_jal),
                     .EX_MemWr(EX_MemWr),.Mem_MemWr(Mem_MemWr),.EX_MemRd(EX_MemRd),.Memcontrol_jal(Memcontrol_jal),
-                    .Mem_MemRd(Mem_MemRd),.EX_BusB(EX_dataB),.Mem_BusB(Mem_BusB), //EX_dataB??$rt
+                    .Mem_MemRd(Mem_MemRd),.EX_BusB(EX_rt_postForward),.Mem_BusB(Mem_BusB), //EX_dataB??$rt
                     .EX_RegWr(EX_RegWr),.Mem_RegWr(Mem_RegWr),.EX_MemtoReg(EX_MemtoReg),.Mem_MemtoReg(Mem_MemtoReg),
                     .EX_RegDst(EX_RegDst),.Mem_RegDst(Mem_RegDst),.EX_WrReg(EX_WrReg),.Mem_WrReg(Mem_WrReg),
                     .EX_PC(EX_PC),.Mem_PC(Mem_PC),.EX_rt(EX_rt),.Mem_rt(Mem_rt),.EX_rd(EX_rd),.Mem_rd(Mem_rd));
