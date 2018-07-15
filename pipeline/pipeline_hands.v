@@ -1,11 +1,12 @@
 //module pipeline(clk,reset,switch,digi,uart_rx,uart_tx,check,ForwardA,ForwardB,ForwardC,ForwardD,IFID_flush,stall);
-module pipeline(clk_o,reset,switch,digi,uart_rx,uart_tx,check,ID_dataAs,sys_clk);
+module pipeline(clk_o,reset,switch,digi,uart_rx,uart_tx,check,sp_monitor,sys_clk);
 input reset;
 input clk_o;
 input uart_rx;
 input [7:0]switch;
 output uart_tx;
-output [7:0]ID_dataAs;
+// output [7:0]ID_dataAs;
+output [7:0] sp_monitor;
 input sys_clk;
 wire clk;
 //output [7:0]led;
@@ -145,7 +146,7 @@ pipeline_ID ID_pipeline(.clk(clk),.reset(reset),.ID_PC(ID_PC),.ID_instruction(ID
                  .WB_Destiny(WB_Destiny),.ID_rt(ID_rt),.ID_rd(ID_rd),.WB_out(WB_out),.Mem_in(Mem_in),
                  .ForwardC(ForwardC),.ForwardD(ForwardD),.IDcontrol_Jump(IDcontrol_Jump),.IDcontrol_Branch(IDcontrol_Branch),
                  .ID_shamt(ID_shamt),.ID_imm(ID_imm),
-                 .temp1(temp1),.temp2(temp2));
+                 .sp_monitor(sp_monitor));
 wire [4:0] EX_shamt;
 wire [15:0] EX_imm;
 wire EX_ALUSrc1, EX_ALUSrc2, EX_EXTOp, EX_LUOp;

@@ -14,7 +14,7 @@ module pipeline_ID(clk,reset,
                    WB_out,Mem_in,PCout,
                    ForwardC,ForwardD,
                    IDcontrol_Jump,IDcontrol_Branch,Branch,ID_shamt,ID_imm,
-                   temp1,temp2);
+                   sp_monitor);
 input IRQ,clk,reset,WB_RegWr,ForwardC,ForwardD;
 input[31:0]ID_PC,ID_instruction,WB_out,Mem_in;
 input[4:0]WB_Destiny;
@@ -34,7 +34,7 @@ output IDcontrol_jal;
 output ID_ALUSrc1, ID_ALUSrc2;
 output [4:0] ID_shamt;
 output [15:0] ID_imm; 
-output [7:0] temp1,temp2;
+output [7:0] sp_monitor;
 
 wire [31:0]data1,data2;
 wire regWr;
@@ -56,7 +56,7 @@ Control control1(
 RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr), 
 		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
 		.Write_data(WB_out), .Read_data1(data1), .Read_data2(data2),
-        .temp1(temp1),.temp2(temp2));
+        .sp_monitor(sp_monitor));
 
 assign PCout=data1;
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;

@@ -1,19 +1,19 @@
 
 module RegisterFile(reset, clk, RegWrite, Read_register1, Read_register2, Write_register, Write_data, Read_data1, Read_data2,
-					temp1,temp2);
+					sp_monitor);
 	input reset, clk;
 	input RegWrite;
 	input [4:0] Read_register1, Read_register2, Write_register;
 	input [31:0] Write_data;
 	output [31:0] Read_data1, Read_data2;
-	output [7:0] temp1,temp2;
+	output [7:0] sp_monitor;
 	
 	reg [31:0] RF_data[31:1];
 	
 	assign Read_data1 = (Read_register1 == 5'b00000)? 32'h00000000: RF_data[Read_register1];
 	assign Read_data2 = (Read_register2 == 5'b00000)? 32'h00000000: RF_data[Read_register2];
-	assign temp1 = RF_data[16][7:0];
-	assign temp2 = RF_data[17][7:0];
+	assign sp_monitor = RF_data[29][7:0];
+	// assign temp2 = RF_data[17][7:0];
 	
 	integer i;
 	always @(*)
