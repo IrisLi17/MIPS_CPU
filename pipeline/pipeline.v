@@ -1,9 +1,10 @@
-module pipeline(clk,reset,led,switch,uart_rx,uart_tx);
+module pipeline(clk,reset,led,switch,digi,uart_rx,uart_tx);
 input reset;
 input uart_rx;
 input [7:0]switch;
 output uart_tx;
 output [7:0]led;
+output [11:0]digi;
 
 input clk;
 wire reset;

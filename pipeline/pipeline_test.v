@@ -2,6 +2,7 @@
 module pipeline_test;
 reg clk;
 wire [7:0]led,switch;
+wire [11:0]digi;
 reg reset;
 reg uart_rx;
 
@@ -24,26 +25,47 @@ initial	 begin forever
 		end
 initial	begin
 			#150005 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b0;
-			#104165 uart_rx <= 1'b0;
-			#104165 uart_rx <= 1'b0;
-			#104165 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b0;
-			#104165 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b0;
-			#104165 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b1;
-			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;//起始位
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;//结束位
+			#104165 uart_rx <= 1'b0;//起始位
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;//起始位
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;//起始位
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b1;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
+			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b0;
 			#104165 uart_rx <= 1'b1;
 		end
 
-pipeline pipe(clk,reset,led,switch,uart_rx,uart_tx);
+pipeline pipe(clk,reset,led,switch,digi,uart_rx,uart_tx);
 endmodule
