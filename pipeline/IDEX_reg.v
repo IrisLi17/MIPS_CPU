@@ -47,48 +47,54 @@ output reg [31:0]EX_dataB;
 output reg [15:0]EX_imm; 
 output reg EX_EXTOp, EX_LUOp;
 always@(posedge clk or posedge reset) begin
-EX_MemWr=(stall|reset) ? 0:ID_MemWr;
-EX_MemRd=(stall|reset) ? 0:ID_MemRd;
-EX_RegWr=((stall|reset) & ID_RegDst!=3)? 0:ID_RegWr;
-if(reset) begin
-EX_ALUFun=0;
-EX_RegDst=0;
-EX_MemtoReg=0;
-EX_WrReg=0;
-EX_PC=32'h80000000;
-EX_rt=0;
-EX_rd=0;
-EX_rs=0;
-EXcontrol_jal=0;
-EX_ALUSrc1 <= 0;
-EX_ALUSrc2 <= 0;
-EX_shamt <= 5'b0;
-EX_dataA <= 32'b0;
-EX_dataB <= 32'b0;
-EX_imm <= 16'b0;
-EX_EXTOp <= 0;
-EX_LUOp <= 0;
-EX_Sign<=0;
-end
-else begin
-EX_ALUFun<=ID_ALUFun;
-EX_RegDst<=ID_RegDst;
-EX_MemtoReg<=ID_MemtoReg;
-EX_WrReg<=ID_WrReg;
-EX_PC<=ID_PC;
-EX_rt<=ID_rt;
-EX_rd<=ID_rd;
-EX_rs<=ID_rs;
-EXcontrol_jal<=IDcontrol_jal;
-EX_ALUSrc1 <= ID_ALUSrc1;
-EX_ALUSrc2 <= ID_ALUSrc2;
-EX_shamt <= ID_shamt;
-EX_dataA <= ID_dataA;
-EX_dataB <= ID_dataB;
-EX_imm <= ID_imm;
-EX_EXTOp <= ID_EXTOp;
-EX_LUOp <= ID_LUOp;
-EX_Sign<=ID_Sign;
-end
+    // EX_MemWr <= (stall|reset) ? 0:ID_MemWr;
+    // EX_MemRd <= (stall|reset) ? 0:ID_MemRd;
+    // EX_RegWr <= ((stall|reset) & ID_RegDst!=3)? 0:ID_RegWr;
+    if(reset) begin
+        EX_MemWr <= 0;
+        EX_MemRd <= 0;
+        EX_RegWr <= (ID_RegDst!=3)? 0: ID_RegWr;
+        EX_ALUFun <= 0;
+        EX_RegDst <= 0;
+        EX_MemtoReg <= 0;
+        EX_WrReg <= 0;
+        EX_PC <= 32'h80000000;
+        EX_rt <= 0;
+        EX_rd <= 0;
+        EX_rs <= 0;
+        EXcontrol_jal <= 0;
+        EX_ALUSrc1 <= 0;
+        EX_ALUSrc2 <= 0;
+        EX_shamt <= 5'b0;
+        EX_dataA <= 32'b0;
+        EX_dataB <= 32'b0;
+        EX_imm <= 16'b0;
+        EX_EXTOp <= 0;
+        EX_LUOp <= 0;
+        EX_Sign <= 0;
+    end
+    else begin
+        EX_MemWr <= stall ? 0:ID_MemWr;
+        EX_MemRd <= stall ? 0:ID_MemRd;
+        EX_RegWr <= (stall & ID_RegDst!=3)? 0:ID_RegWr;
+        EX_ALUFun <= ID_ALUFun;
+        EX_RegDst <= ID_RegDst;
+        EX_MemtoReg <= ID_MemtoReg;
+        EX_WrReg <= ID_WrReg;
+        EX_PC <= ID_PC;
+        EX_rt <= ID_rt;
+        EX_rd <= ID_rd;
+        EX_rs <= ID_rs;
+        EXcontrol_jal <= IDcontrol_jal;
+        EX_ALUSrc1 <= ID_ALUSrc1;
+        EX_ALUSrc2 <= ID_ALUSrc2;
+        EX_shamt <= ID_shamt;
+        EX_dataA <= ID_dataA;
+        EX_dataB <= ID_dataB;
+        EX_imm <= ID_imm;
+        EX_EXTOp <= ID_EXTOp;
+        EX_LUOp <= ID_LUOp;
+        EX_Sign <= ID_Sign;
+    end
 end
 endmodule
