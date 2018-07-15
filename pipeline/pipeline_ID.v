@@ -58,7 +58,7 @@ wire [31:0] RF_ReadData1, RF_ReadData2;
 
 RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr), 
 		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
-		.Write_data(WB_out), .Read_data1(data1), .Read_data2(data2),
+		.Write_data(WB_out), .Read_data1(RF_ReadData1), .Read_data2(RF_ReadData2),
         .sp_monitor(sp_monitor));
 
 assign data1 = (WB_RegWr && WB_Destiny==ID_instruction[25:21]) ? WB_out : RF_ReadData1;
