@@ -79,30 +79,16 @@ assign IF_ID_Clear_temp=(reset | (ID_EX_MemRd && ( (ID_EX_RegRt==IF_ID_RegRs) ||
          ((IF_ID_RegRt==ID_EX_RegRd) && ~ID_EX_RegDst_0) ) 
          ) ) ? 1:0;
 
-reg cur_irq, pre_irq;
-wire irq_flush;
-/*always @(posedge clk or posedge reset or posedge irq) begin
-  if(reset)  begin
-    cur_irq <= 0;
-    pre_irq <= 0;
-    irq_flush  <= 0;
-  end
-  else begin
-    pre_irq = cur_irq;
-    cur_irq = irq;
-    
-irq_flush = (cur_irq && ~pre_irq);
-  end
-end*/
-assign irq_flush = cur_irq && ~pre_irq;
+reg pre_irq;
+wire irq_flush,cur_irq;
+assign cur_irq=irq;
+assign irq_flush = (cur_irq && ~pre_irq);
 always @(posedge clk or posedge reset) begin
-  if (reset) begin
-    cur_irq <= 0;
-    pre_irq <= 0; 
+  if(reset)  begin
+    pre_irq <= 0;
   end
   else begin
-    pre_irq <= cur_irq;
-    cur_irq <= irq;
+    pre_irq <= cur_irq;  
   end
 end
 
