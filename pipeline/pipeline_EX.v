@@ -25,6 +25,8 @@ assign Data1=(ForwardA==2'b0) ? EX_BusA :
 assign Data2=(ForwardB==2'b0 || EX_ALUSrc2) ? EX_BusB :
              (ForwardB==2'b1) ? MEMWBdata :
              (ForwardB==2'b10) ? EXMEMdata : 32'b0;
-assign EX_rt_postForward = Data2;
+assign EX_rt_postForward = (ForwardB==2'b00) ? EX_dataB : 
+                           (ForwardB==2'b01) ? MEMWBdata :
+                           (ForwardB==2'b10) ? EXMEMdata : 32'b0;
 ALU ALUs(.A(Data1),.B(Data2),.Sign(Sign),.ALUFun(EX_ALUFun),.S(EX_ALUOut));
 endmodule
