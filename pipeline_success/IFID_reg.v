@@ -5,12 +5,12 @@ output reg[31:0]ID_PC,ID_instruction;
 always@(posedge reset or posedge clk)
 begin
 if(reset) begin
-ID_PC=32'h80000000;
-ID_instruction=32'b0;
+ID_PC<=32'h80000000;
+ID_instruction<=32'b0;
 end
 else begin
-ID_PC= (stall|IFID_flush) ? ID_PC:IF_PC;
-ID_instruction= (IFID_flush) ? 32'b0:
+ID_PC<= (stall|IFID_flush) ? ID_PC:IF_PC;
+ID_instruction<= (IFID_flush) ? 32'b0:
                 (stall) ? ID_instruction:instruction;
 end
 end
