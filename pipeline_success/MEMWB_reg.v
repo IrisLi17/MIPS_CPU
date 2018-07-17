@@ -24,7 +24,6 @@ always@(posedge clk or posedge reset) begin
         WB_MemtoReg<=0;
         WB_WrReg<=0;
         WB_PC<=32'h80000000;
-        WB_rd<=0;
     end
     else begin
         WB_inA<=Mem_outA;
@@ -34,7 +33,6 @@ always@(posedge clk or posedge reset) begin
         WB_MemtoReg<=Mem_MemtoReg;
         WB_WrReg<=Mem_WrReg;
         WB_PC<=Mem_PC;
-        WB_rd<=Mem_rd;
     end
 end
 endmodule
