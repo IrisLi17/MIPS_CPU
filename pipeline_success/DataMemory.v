@@ -9,7 +9,7 @@ module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite)
 	parameter RAM_SIZE_BIT = 5;
 	
 	reg [31:0] RAM_data[RAM_SIZE - 1: 0];
-	assign Read_data = (MemRead && Address[29:RAM_SIZE_BIT] == 22'd0) ? RAM_data[Address[RAM_SIZE_BIT - 1:0]] : 32'h00000000;
+	assign Read_data = (MemRead && Address[29:RAM_SIZE_BIT] == 25'd0) ? RAM_data[Address[RAM_SIZE_BIT - 1:0]] : 32'h00000000;
 	
 	integer i;
 	always @(posedge reset or posedge clk)
@@ -34,7 +34,7 @@ module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite)
 		  RAM_data[14] <= {24'b0, 8'b01111001};
 		  RAM_data[15] <= {24'b0, 8'b01110001};
 		end
-		else if (MemWrite && Address[29:RAM_SIZE_BIT] == 22'd0)
+		else if (MemWrite && Address[29:RAM_SIZE_BIT] == 25'd0)
 			RAM_data[Address[RAM_SIZE_BIT - 1:0]] <= Write_data;
 		else ;
 			
