@@ -1,4 +1,4 @@
-module IDEX_reg(clk,reset,stall, //????load??use??
+module IDEX_reg(clk,reset,stall,
                 ID_MemWr,EX_MemWr,
                 ID_RegWr,EX_RegWr,
                 ID_MemRd,EX_MemRd,
@@ -47,9 +47,6 @@ output reg [31:0]EX_dataB;
 output reg [15:0]EX_imm; 
 output reg EX_EXTOp, EX_LUOp;
 always@(posedge clk or posedge reset) begin
-    // EX_MemWr <= (stall|reset) ? 0:ID_MemWr;
-    // EX_MemRd <= (stall|reset) ? 0:ID_MemRd;
-    // EX_RegWr <= ((stall|reset) & ID_RegDst!=3)? 0:ID_RegWr;
     if(reset) begin
         EX_MemWr <= 0;
         EX_MemRd <= 0;

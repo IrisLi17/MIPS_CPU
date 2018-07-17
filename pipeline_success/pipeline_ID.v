@@ -33,10 +33,11 @@ output IDcontrol_jal;
 output ID_ALUSrc1, ID_ALUSrc2;
 output [4:0] ID_shamt;
 output [15:0] ID_imm; 
-// output [7:0] monitor1,monitor2;
 
+wire [31:0] RF_ReadData1, RF_ReadData2;
 wire [31:0]data1,data2;
 wire regWr;
+
 assign JT=ID_instruction[25:0];
 assign ID_imm=ID_instruction[15:0];
 assign ID_rs=ID_instruction[25:21];
@@ -44,45 +45,14 @@ assign ID_rt=ID_instruction[20:16];
 assign ID_rd=ID_instruction[15:11];
 assign IDcontrol_jal= (ID_instruction[31:26]==3);
 assign ID_shamt = ID_instruction[10:6];
-
-Control control1(
-		.Instruct(ID_instruction), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),
-		.RegDst(ID_RegDst),.RegWr(regWr),.ALUSrc1(ID_ALUSrc1),.ALUSrc2(ID_ALUSrc2),
-		.ALUFun(ID_ALUFun),.Sign(ID_Sign),.MemWr(ID_MemWr),.MemRd(ID_MemRd),
-		.MemToReg(ID_MemToReg),.EXTOp(EXTOp),.LUOp(LUOp)
-	);
-
-
-wire [31:0] RF_ReadData1, RF_ReadData2;
-
-RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr), 
-		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
-		.Write_data(WB_out), .Read_data1(RF_ReadData1), .Read_data2(RF_ReadData2));
-
 assign data1 = (WB_RegWr && WB_Destiny==ID_instruction[25:21]) ? WB_out : RF_ReadData1;
 assign data2 = (WB_RegWr && WB_Destiny==ID_instruction[20:16]) ? WB_out : RF_ReadData2;
-
 assign PCout=data1;
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;
 assign ConBA={14'b0,ID_imm,2'b00}+ID_PC;
 assign ID_dataA=(ForwardC) ? Mem_in:data1;
 assign ID_dataB=(ForwardD) ? Mem_in:data2;
-
 assign ID_WrReg=(ID_instruction[31:26]==0) ? ID_rd:ID_rt;
-//IDcontrol_Branch
-/*always @(*) begin
-if(reset) 
-IFID_flush=0;
-else case(ID_instruction[31:26])
-6'd1: IFID_flush=(data1[31]==1)? 1:0;//bltz
-6'd4: IFID_flush=(data1==data2)? 1:0;//beq
-6'd5: IFID_flush=(data1==data2)? 0:1;//bne
-6'd6: IFID_flush=(data1[31]==1 | data1==0) ?1:0;//blez
-6'd7: IFID_flush=(data1>0) ?1:0;//bgtz
-default:IFID_flush=0;
-endcase
-ALUout0=(IFID_flush)? 1:PCSrc;
-end */
 assign IDcontrol_Jump=( (ID_instruction[31:26]==0 & (ID_instruction[5:0]==8 | ID_instruction[5:0]==9)) | 
                        (ID_instruction[31:26]==2 | ID_instruction[31:26]==3)) ? 1:0;
 assign Branch=((ID_instruction[31:26]==1)|(ID_instruction[31:26]==4)|(ID_instruction[31:26]==5)|
@@ -93,4 +63,16 @@ assign IDcontrol_Branch=((ID_instruction[31:26]==1 & ID_dataA[31]==1) |//bltz
             (ID_instruction[31:26]==6 & (ID_dataA[31]==1|ID_dataA==0) )     |//blez
             (ID_instruction[31:26]==7 & ID_dataA[31]==0 & ID_dataA!=0)) ? 1:0;//bgtz
 assign ALUout0=(IDcontrol_Branch) ? 0:1;
+
+Control control1(
+		.Instruct(ID_instruction), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),
+		.RegDst(ID_RegDst),.RegWr(regWr),.ALUSrc1(ID_ALUSrc1),.ALUSrc2(ID_ALUSrc2),
+		.ALUFun(ID_ALUFun),.Sign(ID_Sign),.MemWr(ID_MemWr),.MemRd(ID_MemRd),
+		.MemToReg(ID_MemToReg),.EXTOp(EXTOp),.LUOp(LUOp)
+	);
+
+RegisterFile register_file1(.reset(reset), .clk(clk), .RegWrite(WB_RegWr), 
+		.Read_register1(ID_instruction[25:21]), .Read_register2(ID_instruction[20:16]), .Write_register(WB_Destiny),
+		.Write_data(WB_out), .Read_data1(RF_ReadData1), .Read_data2(RF_ReadData2));
+
 endmodule

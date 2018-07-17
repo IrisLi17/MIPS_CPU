@@ -1,6 +1,5 @@
-module UART(sys_clk,cpu_clk,reset,rd,wr,addr,rdata,wdata,uart_rx,uart_tx);
+module UART(sys_clk,reset,rd,wr,addr,rdata,wdata,uart_rx,uart_tx);
 input sys_clk;
-input cpu_clk;
 input reset;
 input rd;
 input wr;
@@ -9,41 +8,25 @@ output [31:0] rdata;
 input [31:0] wdata;
 input uart_rx;
 output uart_tx;
-// output [4:0] enable;
-
-/*****************/
-//output [7:0] uart_rxd;
-//output rx_sta;
-//output reg [4:0] uart_con;
-/*****************/
 
 wire gen_clk;
-/******************/
 wire [7:0] uart_rxd;
 wire rx_sta;
-reg [4:0] uart_con;
-/******************/
-reg [7:0] uart_txd;
-
-
 wire tx_sta;
+reg [4:0] uart_con;
+reg [7:0] uart_txd;
 reg pre_tx_sta;
 reg pre_rx_sta;
-//wire tx_en;
-
 
 baudgen myBaudgen(.sys_clk(sys_clk),.gen_clk(gen_clk));
 receiver1 myReceiver(.uart_rx(uart_rx),.clk(gen_clk),.reset(reset),.rx_data(uart_rxd),.rx_status(rx_sta));
 sender mySender(.tx_data(uart_txd),.clk(gen_clk),.reset(reset),.uart_tx(uart_tx),.tx_status(tx_sta),.tx_enable(uart_con[2]));
-// assign uart_con[2] = uart_con[4];
-// assign enable = uart_con[4:0];
 
 assign rdata = rd?((addr == 32'h40000018)?{24'b0,uart_txd}:
                    ((addr == 32'h4000001c)?{24'b0,uart_rxd}:
                     (addr == 32'h40000020)?{27'b0,uart_con}:32'b0)):32'b0;
 
-
-always @(posedge reset or posedge cpu_clk) begin
+always @(posedge reset or posedge sys_clk) begin
   if (reset) begin
     uart_con <= 5'b00011;
     pre_tx_sta <= 1'b0;
@@ -57,7 +40,6 @@ always @(posedge reset or posedge cpu_clk) begin
         uart_con[4] <= 1'b0;
         uart_con[2] <= 1'b0;
     end
-    //uart_con[2] <= tx_en;
     if (wr) begin
         case(addr)
             32'h40000018: begin

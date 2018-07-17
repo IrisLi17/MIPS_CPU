@@ -1,4 +1,3 @@
-
 module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite);
 	input reset, clk;
 	input [31:0] Address, Write_data;
@@ -14,9 +13,10 @@ module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite)
 	integer i;
 	always @(posedge reset or posedge clk)
 		if (reset) begin
-		  for (i = 16; i < RAM_SIZE; i = i + 1)
-				RAM_data[i] <= 32'h00000000; //program data begins at address 16
-          RAM_data[0]  <= {24'b0, 8'b00111111};
+		  for (i = 16; i < RAM_SIZE; i = i + 1) begin
+			RAM_data[i] <= 32'h00000000; //program data begins at address 16
+		  end
+      	  RAM_data[0]  <= {24'b0, 8'b00111111};
 		  RAM_data[1]  <= {24'b0, 8'b00000110};
 		  RAM_data[2]  <= {24'b0, 8'b01011011};
 		  RAM_data[3]  <= {24'b0, 8'b01001111};
@@ -35,5 +35,6 @@ module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite)
 		end
 		else if (MemWrite && Address[31:10] == 22'd0)
 			RAM_data[Address[RAM_SIZE_BIT + 1:2]] <= Write_data;
+		else ;
 			
 endmodule

@@ -543,7 +543,7 @@ else begin //core state
             MemRd <= 0;
             MemToReg <= 2'b10; //PC+4
         end
-        default: begin end
+        default: ;
       endcase
     end
     6'b100011: begin //lw
@@ -719,7 +719,7 @@ else begin //core state
         MemRd <= 0;
         MemToReg <= 2'b10; //PC+4
     end
-    default: begin end
+    default: ;
   endcase
 end
 end

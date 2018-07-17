@@ -70,7 +70,6 @@ always @(posedge clk or posedge reset) begin
       if(baud_count == 7'd15) begin
         baud_count<=7'd0;
         status<=2'b00;
-        //temp_data<=data;
         out_status<=1'b1;
       end
       else begin

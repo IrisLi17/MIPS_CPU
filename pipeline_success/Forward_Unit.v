@@ -36,8 +36,8 @@ always @(*) begin
     ForwardB <= 2'b00;
     ForwardC <= 0;
     ForwardD <= 0;
-    Forwardsw <= 0;
-    ForwardPC <= 0;
+    Forwardsw <= 0;
+    ForwardPC <= 0;
   end
   else begin
     if (EX_MEM_RegRd!=0 && EX_MEM_RegWrite && (EX_MEM_RegRd==ID_EX_RegRs)) ForwardA <= 2'b10;
