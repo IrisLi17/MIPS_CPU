@@ -29,7 +29,7 @@ add     $s3, $t4, $zero # forwarding
 s2greater:
 sub     $s4, $s2, $s3
 beq     $s4, $zero, finish # forwarding
-sll     $zero, $zero, 0 # stall
+# sll     $zero, $zero, 0 # stall
 add     $s2, $s3, $zero
 add     $s3, $s4, $zero
 j		compare
