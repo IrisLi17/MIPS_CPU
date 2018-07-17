@@ -1,3 +1,5 @@
+测试数据：B4 96 FF 05 AB CC A8 0C
+
 # ---2018.7.17中午更新---
 目前仍需要完成：
 * 删除`InterruptionCode.asm`中的`nop`指令，确保CPU仍然能正常工作
