@@ -8,7 +8,7 @@ wire Z, V, N;
 Adder adds(.A(A),.B(B),.minus(ALUFun[0]),.Sign(Sign),.Z(Z),.V(V),.N(N),.added(added));
 CMP cmps(.Z(Z),.V(V),.N(N),.compare(compare),.choose(ALUFun[3:1]));
 Logic logics(.A(A),.B(B),.choice(ALUFun[3:0]),.logic(logic));
-Shift shifts(.A(A),.B(B),.chooses(ALUFun[1:0]),.shift(shift));
+Shift shifts(.A(A[4:0]),.B(B),.chooses(ALUFun[1:0]),.shift(shift));
 assign S=(ALUFun[5:4]==2'b00)?added:
          (ALUFun[5:4]==2'b01)?logic:
          (ALUFun[5:4]==2'b10)?shift:compare;
@@ -55,7 +55,8 @@ endmodule
 
 //Shift
 module Shift(A,B,chooses,shift);
-input[31:0]A,B;
+input[4:0]A;
+input [31:0]B;
 input[1:0]chooses;
 output[31:0]shift;
 wire [31:0] sll_shift, srl_shift, sra_shift;

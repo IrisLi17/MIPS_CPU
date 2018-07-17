@@ -37,5 +37,5 @@ set_property -dict {PACKAGE_PIN C1 IOSTANDARD LVCMOS33} [get_ports {digi[9]}]
 set_property -dict {PACKAGE_PIN H1 IOSTANDARD LVCMOS33} [get_ports {digi[8]}]
 
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets sys_clk]
-create_clock -period 7.8000 -name CLK -waveform {0.000 3.900} [get_ports sys_clk]
+create_clock -period 7.4000 -name CLK -waveform {0.000 3.700} [get_ports sys_clk]
 

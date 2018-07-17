@@ -9,18 +9,19 @@ module EXMEM_reg(clk,reset,
                  EX_WrReg,Mem_WrReg,
                  EX_PC,Mem_PC,
                  EX_rt,Mem_rt,
-                 EXcontrol_jal,Memcontrol_jal,
-                 EX_rd);
+                 EXcontrol_jal,Memcontrol_jal);
 input clk,reset,EX_MemWr,EX_MemRd,EX_RegWr;
-input[31:0]EX_ALUout,EX_BusB,EX_PC;
+input[31:0]EX_ALUout,EX_BusB;
+input [30:0]EX_PC;
 input[1:0]EX_MemtoReg,EX_RegDst;
-input[4:0]EX_WrReg,EX_rt,EX_rd;
+input[4:0]EX_WrReg,EX_rt;
 input EXcontrol_jal;
 output reg Memcontrol_jal;
 output reg[4:0]Mem_WrReg,Mem_rt;
 output reg[1:0]Mem_MemtoReg,Mem_RegDst;
 output reg Mem_MemWr,Mem_MemRd,Mem_RegWr;
-output reg [31:0]Mem_in,Mem_BusB,Mem_PC;
+output reg [31:0]Mem_in,Mem_BusB;
+output reg [30:0] Mem_PC;
 
 always@(posedge clk or posedge reset) begin
     if(reset) begin
@@ -32,7 +33,7 @@ always@(posedge clk or posedge reset) begin
         Mem_WrReg<=0;
         Mem_RegWr<=0;
         Mem_RegDst<=0;
-        Mem_PC<=32'h80000000;
+        Mem_PC<=31'b0;
         Mem_rt<=0;
         Memcontrol_jal<=0;
     end
