@@ -7,12 +7,14 @@ module MEMWB_reg(clk,reset,
                  Mem_MemtoReg,WB_MemtoReg,
                  Mem_PC,WB_PC);
 input clk,reset,Mem_RegWr;
-input [31:0]Mem_outB,Mem_outA,Mem_PC;
+input [31:0]Mem_outB,Mem_outA;
+input [30:0]Mem_PC;
 input [1:0]Mem_MemtoReg,Mem_RegDst;
 input [4:0]Mem_WrReg;
 output reg[1:0]WB_MemtoReg,WB_RegDst;
 output reg[4:0]WB_WrReg;
-output reg[31:0]WB_inA,WB_inB,WB_PC;
+output reg[31:0]WB_inA,WB_inB;
+output reg [30:0]WB_PC;
 output reg WB_RegWr;
 
 always@(posedge clk or posedge reset) begin
@@ -23,7 +25,7 @@ always@(posedge clk or posedge reset) begin
         WB_RegDst<=0;
         WB_MemtoReg<=0;
         WB_WrReg<=0;
-        WB_PC<=32'h80000000;
+        WB_PC<=31'b0;
     end
     else begin
         WB_inA<=Mem_outA;

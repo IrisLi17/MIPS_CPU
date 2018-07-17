@@ -4,9 +4,7 @@ MEM/WB -> ID/EX forwarding
 */
 
 module Forward_Unit (
-  input clk,
   input reset,
-
   input EX_MEM_RegWrite,
   input [4:0]EX_MEM_RegRd,
   input [4:0]ID_EX_RegRs,

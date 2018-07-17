@@ -65,7 +65,7 @@ assign IDcontrol_Branch=((ID_instruction[31:26]==1 & ID_dataA[31]==1) |//bltz
 assign ALUout0=(IDcontrol_Branch) ? 0:1;
 
 Control control1(
-		.Instruct(ID_instruction), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),
+		.OpCode(ID_instruction[31:26]), .Funct(ID_instruction[5:0]), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),
 		.RegDst(ID_RegDst),.RegWr(regWr),.ALUSrc1(ID_ALUSrc1),.ALUSrc2(ID_ALUSrc2),
 		.ALUFun(ID_ALUFun),.Sign(ID_Sign),.MemWr(ID_MemWr),.MemRd(ID_MemRd),
 		.MemToReg(ID_MemToReg),.EXTOp(EXTOp),.LUOp(LUOp)

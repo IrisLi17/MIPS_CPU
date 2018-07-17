@@ -24,7 +24,7 @@ input clk,reset,stall,ID_MemWr,ID_MemRd,ID_RegWr;//when stall is enable,place Me
 input [5:0]ID_ALUFun;
 input [1:0]ID_RegDst,ID_MemtoReg;
 input [4:0]ID_WrReg,ID_rt,ID_rd,ID_rs;
-input [31:0]ID_PC;
+input [30:0]ID_PC;
 input IDcontrol_jal;
 input ID_ALUSrc1, ID_ALUSrc2; 
 input [4:0]ID_shamt;
@@ -35,7 +35,7 @@ input ID_EXTOp, ID_LUOp;
 input ID_Sign;
 output reg EX_Sign;
 output reg EXcontrol_jal;
-output reg[31:0]EX_PC;
+output reg[30:0]EX_PC;
 output reg[4:0]EX_WrReg,EX_rt,EX_rd,EX_rs;
 output reg[1:0]EX_RegDst,EX_MemtoReg;
 output reg[5:0]EX_ALUFun;
@@ -55,7 +55,7 @@ always@(posedge clk or posedge reset) begin
         EX_RegDst <= 0;
         EX_MemtoReg <= 0;
         EX_WrReg <= 0;
-        EX_PC <= 32'h80000000;
+        EX_PC <= 31'b0;
         EX_rt <= 0;
         EX_rd <= 0;
         EX_rs <= 0;

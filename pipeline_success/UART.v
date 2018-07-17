@@ -5,7 +5,7 @@ input rd;
 input wr;
 input [31:0] addr;
 output [31:0] rdata;
-input [31:0] wdata;
+input [7:0] wdata;
 input uart_rx;
 output uart_tx;
 
@@ -31,6 +31,7 @@ always @(posedge reset or posedge sys_clk) begin
     uart_con <= 5'b00011;
     pre_tx_sta <= 1'b0;
     pre_rx_sta <= 1'b0;
+    uart_txd <= 8'b0;
   end
   else begin
     pre_tx_sta <= tx_sta;
