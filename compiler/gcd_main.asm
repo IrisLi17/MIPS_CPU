@@ -15,25 +15,22 @@ and     $t2, $t0, $t1 # forwarding
 bne		$t2, $zero, target # forwarding
 add		$s2, $s5, $zero # 无关指令，防止阻塞
 j		loop
-# sll     $zero, $zero, 0
 
 target:
 add     $s3, $s6, $zero
 compare:
 slt     $t3, $s2, $s3 # forwarding
 beq     $t3, $zero, s2greater # forwarding
-# sll     $zero, $zero, 0 # stall
 add     $t4, $s2, $zero # if $s3 is greater, swap
 add     $s2, $s3, $zero
 add     $s3, $t4, $zero # forwarding
 s2greater:
 sub     $s4, $s2, $s3
 beq     $s4, $zero, finish # forwarding
-# sll     $zero, $zero, 0 # stall
+sll     $zero, $zero, 0
 add     $s2, $s3, $zero
 add     $s3, $s4, $zero
 j		compare
-# sll     $zero, $zero, 0 # stall
 
 finish: # $s3 is gcd
 lui     $t5,0x4000
@@ -47,6 +44,5 @@ lui     $t0,0x4000
 lw		$t1, 32($t0)		# $t1 = uart_con
 addi	$t2, $zero, 8			# $t2 = 8
 and     $t1,$t1,$t2
-# sll     $t1,$t1,0
 bne		$t1, $zero, loop
 j		Exit				# jump to Exit
