@@ -1,14 +1,13 @@
-
 module InstructionMemory(Address, Instruction);
-	input [31:0] Address;
+	input [7:0] Address;
 	output reg [31:0] Instruction;
 	
 	always @(*)
-	    case (Address[9:2])
-			0: Instruction <= 32'b00001000000000000000000000010000; // jump to normal入口，第�?条jal，然后跳到前面，�?后一条jr使得�?高位清零
+	    case (Address)
+			0: Instruction <= 32'b00001000000000000000000000010000; // jump to normal入口，第�??条jal，然后跳到前面，�??后一条jr使得�??高位清零
 			1: Instruction <= 32'b00001000000000000000000001100000; //jump to Interrupt
 			2: Instruction <= 32'b00001000000000000000000010100000; // jump to error
-			15: Instruction <= 32'b00000011111000000000000000001000;//	jr $ra, $ra中存�?17地址			
+			15: Instruction <= 32'b00000011111000000000000000001000;//	jr $ra, $ra中存�??17地址			
 			16: Instruction <= 32'b000011_00000000000000000000001111;// jal 15
 17: Instruction <= 32'b00111100000011010100000000000000; // ['', ['lui', '$t5', '0x4000']]
 18: Instruction <= 32'b10101101101000000000000000001000; // ['', ['sw', '$zero', '8($t5)']]
