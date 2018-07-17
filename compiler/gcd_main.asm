@@ -1,7 +1,7 @@
 lui     $t5, 0x4000
 sw      $zero, 8($t5)
 lui     $t4, 0xffff
-addi    $t4, $zero, 0xff00
+addi    $t4, $zero, 0xc000
 sw      $t4, 0($t5)
 nor     $t6, $zero, $zero
 sw      $t6, 4($t5)
@@ -15,14 +15,14 @@ and     $t2, $t0, $t1 # forwarding
 bne		$t2, $zero, target # forwarding
 add		$s2, $s5, $zero # 无关指令，防止阻塞
 j		loop
-sll     $zero, $zero, 0
+# sll     $zero, $zero, 0
 
 target:
 add     $s3, $s6, $zero
 compare:
 slt     $t3, $s2, $s3 # forwarding
 beq     $t3, $zero, s2greater # forwarding
-sll     $zero, $zero, 0 # stall
+# sll     $zero, $zero, 0 # stall
 add     $t4, $s2, $zero # if $s3 is greater, swap
 add     $s2, $s3, $zero
 add     $s3, $t4, $zero # forwarding
@@ -33,7 +33,7 @@ sll     $zero, $zero, 0 # stall
 add     $s2, $s3, $zero
 add     $s3, $s4, $zero
 j		compare
-sll     $zero, $zero, 0 # stall
+# sll     $zero, $zero, 0 # stall
 
 finish: # $s3 is gcd
 lui     $t5,0x4000
