@@ -5,7 +5,7 @@ module DataMemory(reset, clk, Address, Write_data, Read_data, MemRead, MemWrite)
 	input MemRead, MemWrite;
 	output [31:0] Read_data;
 	
-	parameter RAM_SIZE = 256;
+	parameter RAM_SIZE = 32;
 	parameter RAM_SIZE_BIT = 8;
 	
 	reg [31:0] RAM_data[RAM_SIZE - 1: 0];

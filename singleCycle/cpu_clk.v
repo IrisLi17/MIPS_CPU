@@ -15,7 +15,7 @@ always @(posedge sys_clk) begin
       clk<=~clk;
     end
     default: begin
-      counter <= counter + 3'd1;
+      counter <= counter + 3'b001;
     end
   endcase
 end
