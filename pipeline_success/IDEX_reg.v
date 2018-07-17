@@ -50,7 +50,7 @@ always@(posedge clk or posedge reset) begin
     if(reset) begin
         EX_MemWr <= 0;
         EX_MemRd <= 0;
-        EX_RegWr <= (ID_RegDst!=3)? 0: ID_RegWr;
+        EX_RegWr <= 0;
         EX_ALUFun <= 0;
         EX_RegDst <= 0;
         EX_MemtoReg <= 0;
