@@ -373,7 +373,7 @@ always @(*) begin
               RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000101: begin //bne
         PCSrc <= 3'b001; //beq
@@ -387,7 +387,7 @@ always @(*) begin
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000110: begin //blez
         PCSrc <= 3'b001; //beq
@@ -401,7 +401,7 @@ always @(*) begin
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000111: begin //bgtz
         PCSrc <= 3'b001; //beq
@@ -415,7 +415,7 @@ always @(*) begin
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000001: begin //bltz
         PCSrc <= 3'b001; //beq
@@ -429,7 +429,7 @@ always @(*) begin
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000010: begin //j
         PCSrc <= 3'b010; //j
@@ -817,7 +817,7 @@ case (OpCode)
               RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000101: begin //bne
         PCSrc <= 3'b001; //beq
@@ -831,7 +831,7 @@ case (OpCode)
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000110: begin //blez
         PCSrc <= 3'b001; //beq
@@ -845,7 +845,7 @@ case (OpCode)
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000111: begin //bgtz
         PCSrc <= 3'b001; //beq
@@ -859,7 +859,7 @@ case (OpCode)
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000001: begin //bltz
         PCSrc <= 3'b001; //beq
@@ -873,7 +873,7 @@ case (OpCode)
                       RegDst <= 2'bx;
               Sign <= 1'bx;
               MemToReg <= 2'bx;
-              LUOp <= 1'bx;
+              LUOp <= 1'b0;
       end
       6'b000010: begin //j
         PCSrc <= 3'b010; //j
