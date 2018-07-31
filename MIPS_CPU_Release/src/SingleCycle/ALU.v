@@ -37,7 +37,7 @@ input[2:0]choose;
 output[31:0] compare;
 assign compare=(choose==3'b001) ? Z:
                (choose==3'b000) ? ~Z:
-               (choose==3'b010) ? (N^V)):
+               (choose==3'b010) ? (N^V):
                (choose==3'b110) ? (N|Z):
                (choose==3'b101) ? N:
                (choose==3'b111) ? ~(N|Z):32'b0;
