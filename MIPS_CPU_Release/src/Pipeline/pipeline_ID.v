@@ -23,9 +23,9 @@ output[1:0]ID_RegDst,ID_MemToReg;
 output ID_RegWr,ID_Sign,ID_MemWr,ID_MemRd,EXTOp,LUOp;
 output ALUout0;
 output[5:0]ID_ALUFun;
-output[31:0]ConBA;//branch??
+output[31:0]ConBA;//branch
 output[31:0]ID_dataA,ID_dataB;
-output[25:0]JT;//??jump??
+output[25:0]JT;//jump
 output[4:0]ID_WrReg,ID_rt,ID_rd,ID_rs;
 output IDcontrol_Jump,IDcontrol_Branch;
 output Branch;
@@ -39,30 +39,31 @@ wire [31:0]data1,data2;
 wire regWr;
 
 assign JT=ID_instruction[25:0];
-assign ID_imm=ID_instruction[15:0];
-assign ID_rs=ID_instruction[25:21];
-assign ID_rt=ID_instruction[20:16];
-assign ID_rd=ID_instruction[15:11];
-assign IDcontrol_jal= (ID_instruction[31:26]==3);
-assign ID_shamt = ID_instruction[10:6];
-assign data1 = (WB_RegWr && WB_Destiny==ID_instruction[25:21]) ? WB_out : RF_ReadData1;
+assign ID_imm=ID_instruction[15:0];//立即数
+assign ID_rs=ID_instruction[25:21];//rs
+assign ID_rt=ID_instruction[20:16];//rt
+assign ID_rd=ID_instruction[15:11];//rd
+assign IDcontrol_jal= (ID_instruction[31:26]==3);//判定指令是jal与否
+assign ID_shamt = ID_instruction[10:6];//立即数
+assign data1 = (WB_RegWr && WB_Destiny==ID_instruction[25:21]) ? WB_out : RF_ReadData1;//从WB段转发，为了解决不能先写后读的问题
 assign data2 = (WB_RegWr && WB_Destiny==ID_instruction[20:16]) ? WB_out : RF_ReadData2;
-assign PCout=data1;
+assign PCout=data1;//31号寄存器
 assign ID_RegWr=(ID_instruction==0) ? 0:regWr;
 assign ConBA={14'b0,ID_imm,2'b00}+ID_PC;
-assign ID_dataA=(ForwardC) ? Mem_in:data1;
+assign ID_dataA=(ForwardC) ? Mem_in:data1;//送入提前预测分支的两条数据通路
 assign ID_dataB=(ForwardD) ? Mem_in:data2;
-assign ID_WrReg=(ID_instruction[31:26]==0) ? ID_rd:ID_rt;
+assign ID_WrReg=(ID_instruction[31:26]==0) ? ID_rd:ID_rt;//本指令的写入寄存器编号，若为R型指令，则赋rd值，否则赋rt值
 assign IDcontrol_Jump=( (ID_instruction[31:26]==0 & (ID_instruction[5:0]==8 | ID_instruction[5:0]==9)) | 
-                       (ID_instruction[31:26]==2 | ID_instruction[31:26]==3)) ? 1:0;
+                       (ID_instruction[31:26]==2 | ID_instruction[31:26]==3)) ? 1:0;//判断是否为跳转指令，Hazard单元要用
 assign Branch=((ID_instruction[31:26]==1)|(ID_instruction[31:26]==4)|(ID_instruction[31:26]==5)|
-               (ID_instruction[31:26]==6)|(ID_instruction[31:26]==7) )? 1:0;
+               (ID_instruction[31:26]==6)|(ID_instruction[31:26]==7) )? 1:0;//判断是否为分支指令，Hazard单元要用
+//提前预测分支，Hazard单元要用
 assign IDcontrol_Branch=((ID_instruction[31:26]==1 & ID_dataA[31]==1) |//bltz
             (ID_instruction[31:26]==4 & ID_dataA==ID_dataB) |//beq
             (ID_instruction[31:26]==5 & ID_dataA!=ID_dataB) |//bne
             (ID_instruction[31:26]==6 & (ID_dataA[31]==1|ID_dataA==0) )     |//blez
             (ID_instruction[31:26]==7 & ID_dataA[31]==0 & ID_dataA!=0)) ? 1:0;//bgtz
-assign ALUout0=(IDcontrol_Branch) ? 0:1;
+assign ALUout0 = ~IDcontrol_Branch;//若提前预测分支需要跳转，置1，并传进IF段
 
 Control control1(
 		.OpCode(ID_instruction[31:26]), .Funct(ID_instruction[5:0]), .IRQ(IRQ), .PC31(ID_PC[31]), .PCSrc(PCSrc),

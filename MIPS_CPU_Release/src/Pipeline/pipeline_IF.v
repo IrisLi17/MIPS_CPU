@@ -14,7 +14,7 @@ assign PC_choose= (PCSrc==4) ?  32'h80000004:
                   stall? PC:
                   (PCSrc==0) ? 	PC+4 :
                   (PCSrc==1 & ALUOut0==0) ?  ConBA: //branch
-                  (PCSrc==2) ?  {PC[31:28],JT,2'b0}:
+                  (PCSrc==2) ?  {PC[31:28],JT,2'b0}: //jump
                   (ForwardPC==1) ? {1'b0, MEM_PC}:
                   (PCSrc==3) ?  ID_BusA: //$ra
                   (PCSrc==5) ?  32'h80000008: PC+4;  

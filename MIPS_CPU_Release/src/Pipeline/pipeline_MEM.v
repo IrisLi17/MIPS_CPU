@@ -11,12 +11,12 @@ output [7:0]led;
 output [11:0]digi;
 output irqout;
 
-wire [31:0]memout1,memout2,memout3;
+wire [31:0]memout1,memout2,memout3;//分别为从DataMemory、Peripheral、UART中取出的值
 wire [31:0]Mem_WriteData;
 
 assign Mem_outB=(Mem_in[30]==1)?((Mem_in[5:0]==6'h18 || Mem_in[5:0]==6'h1c || Mem_in[5:0]==6'h20)?memout3:memout2):memout1;//0x40000000??????
-assign Mem_outA=Mem_in;
-assign Mem_WriteData = Forwardsw ? WB_dataB : Mem_BusB;
+assign Mem_outA=Mem_in;//ALU运算结果不经过MEM
+assign Mem_WriteData = Forwardsw ? WB_dataB : Mem_BusB;//写入存储器选择
 
 DataMemory DataMem(.reset(reset), .clk(sys_clk), .Address(Mem_in[31:2]), .Write_data(Mem_WriteData), .Read_data(memout1), 
 .MemRead(Mem_MemRd), .MemWrite(Mem_MemWr));

@@ -10,6 +10,6 @@ assign WB_out = (WB_MemtoReg==0) ? WB_inA: //from ALU
               (WB_MemtoReg==1) ? WB_inB: // from Memory
               (WB_MemtoReg==2) ? {1'b0, WB_PC}:
               ({1'b0, WB_PC} - 4);
-assign WB_Destiny = (WB_RegDst==2) ? 31:
+assign WB_Destiny = (WB_RegDst==2) ? 31://送入ID段的写入寄存器编号
                   (WB_RegDst==3) ? 26: WB_WrReg;
 endmodule
